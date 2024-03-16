@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Lato, Montserrat, Roboto } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
 
 // const inter = Inter({ subsets: ["latin"] });
-const lato = Montserrat({
+const lato = Open_Sans({
   subsets: ["latin"],
   weight: ["400"],
 });
@@ -20,8 +21,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={lato.className}>{children}</body>
-    </html>
+    <ClerkProvider
+      appearance={{
+        elements: {
+          formButtonPrimary: "bg-green-500 hover:bg-green-600",
+          footerActionLink: "text-green-500 hover:text-green-600",
+        },
+      }}
+    >
+      <html lang="en">
+        <body className={lato.className}>{children}</body>
+      </html>
+    </ClerkProvider>
   );
 }
