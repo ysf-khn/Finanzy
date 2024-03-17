@@ -10,14 +10,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import {
   Form,
@@ -29,14 +27,19 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { ExpenseSchema } from "@/lib/validations";
+import { useState } from "react";
 
 const Page = () => {
+  const [isSubmitting, setIsSubmititng] = useState(false);
+  const [category, setCategory] = useState("");
+  const [paymentMode, setPaymentMode] = useState("");
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof ExpenseSchema>>({
     resolver: zodResolver(ExpenseSchema),
     defaultValues: {
       name: "",
-      amount: 0,
+      amount: "",
       category: "",
       mode: "",
       notes: "",
@@ -44,7 +47,9 @@ const Page = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof ExpenseSchema>) {
+  async function onSubmit(values: z.infer<typeof ExpenseSchema>) {
+    setIsSubmititng(true);
+
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
@@ -103,7 +108,7 @@ const Page = () => {
                       Amount <span className="text-green-500">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="₹" {...field} />
+                      <Input placeholder="₹" {...field} type="number" />
                     </FormControl>
 
                     <FormMessage />
@@ -117,25 +122,27 @@ const Page = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Category</FormLabel>
-                    <FormControl>
-                      <Menubar>
-                        <MenubarMenu>
-                          <MenubarTrigger className="w-full text-slate-500">
-                            Select Cateogry
-                          </MenubarTrigger>
-                          <MenubarContent className="w-full">
-                            <MenubarItem>Food</MenubarItem>
-                            <MenubarSeparator />
-                            <MenubarItem>Grocery</MenubarItem>
-                            <MenubarSeparator />
-                            <MenubarItem>Outing</MenubarItem>
-                            <MenubarSeparator />
-                            <MenubarItem>Tafri</MenubarItem>
-                          </MenubarContent>
-                        </MenubarMenu>
-                      </Menubar>
-                    </FormControl>
-
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a category" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="m@example.com">
+                          m@example.com
+                        </SelectItem>
+                        <SelectItem value="m@google.com">
+                          m@google.com
+                        </SelectItem>
+                        <SelectItem value="m@support.com">
+                          m@support.com
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -146,26 +153,28 @@ const Page = () => {
                 name="mode"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Payment Mode</FormLabel>
-                    <FormControl>
-                      <Menubar>
-                        <MenubarMenu>
-                          <MenubarTrigger className="w-full text-slate-500">
-                            Select Payment Mode
-                          </MenubarTrigger>
-                          <MenubarContent className="w-full">
-                            <MenubarItem>Cash</MenubarItem>
-                            <MenubarSeparator />
-                            <MenubarItem>UPI</MenubarItem>
-                            <MenubarSeparator />
-                            <MenubarItem>Card</MenubarItem>
-                            <MenubarSeparator />
-                            <MenubarItem>Other</MenubarItem>
-                          </MenubarContent>
-                        </MenubarMenu>
-                      </Menubar>
-                    </FormControl>
-
+                    <FormLabel>Payment mode</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a payment mode" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="m@example.com">
+                          m@example.com
+                        </SelectItem>
+                        <SelectItem value="m@google.com">
+                          m@google.com
+                        </SelectItem>
+                        <SelectItem value="m@support.com">
+                          m@support.com
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -178,7 +187,10 @@ const Page = () => {
                   <FormItem>
                     <FormLabel>Notes</FormLabel>
                     <FormControl>
-                      <Textarea />
+                      <Textarea
+                        placeholder="Add notes"
+                        onChange={field.onChange}
+                      />
                     </FormControl>
 
                     <FormMessage />
