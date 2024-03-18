@@ -1,6 +1,5 @@
 export const sidebarLinks = [
   {
-    //   imgURL: "/assets/icons/home.svg",
     route: "/",
     label: "Home",
   },
@@ -10,18 +9,49 @@ export const sidebarLinks = [
   },
 
   {
-    //   imgURL: "/assets/icons/star.svg",
     route: "/lending",
     label: "Lending",
   },
-  //   {
-  //     //   imgURL: "/assets/icons/tag.svg",
-  //     route: "/tags",
-  //     label: "Tags",
-  //   },
-  //   {
-  //     //   imgURL: "/assets/icons/user.svg",
-  //     route: "/profile",
-  //     label: "Profile",
-  //   },
+];
+
+export const categoryItems = [
+  {
+    name: "Grocery",
+    value: "grocery",
+  },
+  {
+    name: "Food",
+    value: "food",
+  },
+  {
+    name: "Drinks",
+    value: "drinks",
+  },
+  {
+    name: "Shopping",
+    value: "shopping",
+  },
+  {
+    name: "Other",
+    value: "Other",
+  },
+];
+
+export const paymentModes = [
+  {
+    name: "Cash",
+    value: "cash",
+  },
+  {
+    name: "UPI",
+    value: "upi",
+  },
+  {
+    name: "Card",
+    value: "card",
+  },
+  {
+    name: "Other",
+    value: "other",
+  },
 ];

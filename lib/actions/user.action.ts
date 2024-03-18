@@ -15,7 +15,28 @@ interface UpdateUserParams {
   updateData: Partial<IUser>;
 }
 
-export async function CreateUser(userData: UserDataParams) {
+interface GetUserByIdParams {
+  userId: string | null;
+}
+
+export async function getUserById(params: GetUserByIdParams) {
+  try {
+    connectDB();
+
+    const { userId } = params;
+
+    const user = await User.findOne({ clerkId: userId });
+
+    if (!user) return console.log("User not found");
+
+    return user;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function createUser(userData: UserDataParams) {
   try {
     connectDB();
 
@@ -29,7 +50,7 @@ export async function CreateUser(userData: UserDataParams) {
   }
 }
 
-export async function UpdateUser(params: UpdateUserParams) {
+export async function updateUser(params: UpdateUserParams) {
   try {
     connectDB();
 
@@ -46,7 +67,7 @@ export async function UpdateUser(params: UpdateUserParams) {
   }
 }
 
-export async function DeleteUser(params: { clerkId: string }) {
+export async function deleteUser(params: { clerkId: string }) {
   try {
     connectDB();
 
