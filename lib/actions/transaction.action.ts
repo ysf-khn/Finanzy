@@ -16,6 +16,25 @@ interface CreateTransactionParams {
   //   path: string;
 }
 
+interface GetUserTransactionsParams {
+  userId: string | null;
+}
+
+export async function getUserTransactions(params: GetUserTransactionsParams) {
+  try {
+    connectDB();
+
+    const { userId } = params;
+
+    const userTransactions = await Transaction.find({ user: userId });
+
+    return { transactions: userTransactions };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
 export async function createTransaction(params: CreateTransactionParams) {
   try {
     connectDB();

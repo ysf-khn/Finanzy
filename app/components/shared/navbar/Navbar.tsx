@@ -17,9 +17,7 @@ const Navbar = async () => {
         </h1>
       </Link>
       <div className="flex items-center justify-between gap-4">
-        <p>
-          <span className="text-green-500">Hi</span>, {mongoUser.name}
-        </p>
+        <p>Hi, {mongoUser.name}</p>
         <UserButton />
       </div>
     </nav>
