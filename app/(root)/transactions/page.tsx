@@ -51,16 +51,21 @@ const Page = async () => {
                 <Image
                   src={`/${
                     item.transactionType === "income"
-                      ? "increase.png"
-                      : "decrease.png"
+                      ? "increase.svg"
+                      : "decrease.svg"
                   }`}
-                  height={32}
-                  width={32}
+                  height={36}
+                  width={36}
                   alt="Icon"
                 />
               </TableCell>
               <TableCell className="font-medium">{item.name}</TableCell>
-              <TableCell>₹{item.amount}</TableCell>
+              <TableCell>
+                <span className="font-bold">
+                  {item.transactionType === "income" ? "+" : "-"}
+                </span>{" "}
+                ₹{item.amount}
+              </TableCell>
               <TableCell>{item.category || "None"}</TableCell>
               <TableCell>{item.paymentMode || "Not Specified"}</TableCell>
               <TableCell className="text-right">
