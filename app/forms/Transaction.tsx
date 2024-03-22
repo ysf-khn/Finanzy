@@ -88,10 +88,14 @@ const Transaction = ({ mongoUser, transactionType }: TransactionParams) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Name <span className="text-green-500">*</span>
+                Name <span className="text-gradient">*</span>
               </FormLabel>
               <FormControl>
-                <Input placeholder="Shawarma" {...field} />
+                <Input
+                  placeholder="Shawarma"
+                  {...field}
+                  className="dark:bg-black"
+                />
               </FormControl>
 
               <FormMessage />
@@ -105,10 +109,16 @@ const Transaction = ({ mongoUser, transactionType }: TransactionParams) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Amount <span className="text-green-500">*</span>
+                Amount <span className="text-gradient">*</span>
               </FormLabel>
               <FormControl>
-                <Input placeholder="₹" {...field} type="number" min={0} />
+                <Input
+                  placeholder="₹"
+                  {...field}
+                  type="number"
+                  min={0}
+                  className="dark:bg-black"
+                />
               </FormControl>
 
               <FormMessage />
@@ -124,7 +134,7 @@ const Transaction = ({ mongoUser, transactionType }: TransactionParams) => {
               <FormLabel>Category</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="dark:bg-black">
                     <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
                 </FormControl>
@@ -153,7 +163,7 @@ const Transaction = ({ mongoUser, transactionType }: TransactionParams) => {
               <FormLabel>Payment mode</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="dark:bg-black">
                     <SelectValue placeholder="Select a payment mode" />
                   </SelectTrigger>
                 </FormControl>
@@ -181,14 +191,22 @@ const Transaction = ({ mongoUser, transactionType }: TransactionParams) => {
             <FormItem>
               <FormLabel>Notes</FormLabel>
               <FormControl>
-                <Textarea placeholder="Add notes" onChange={field.onChange} />
+                <Textarea
+                  placeholder="Add notes"
+                  onChange={field.onChange}
+                  className="dark:bg-black"
+                />
               </FormControl>
 
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isSubmitting}>
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="primary-gradient text-slate-100"
+        >
           {transactionType === "income" ? "Add Income" : "Add Expense"}
         </Button>
       </form>

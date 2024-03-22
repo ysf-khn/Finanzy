@@ -1,14 +1,17 @@
 export const sidebarLinks = [
   {
+    iconUrl: "/assets/icons/home.svg",
     route: "/",
     label: "Home",
   },
   {
+    iconUrl: "/assets/icons/transactions.svg",
     route: "/transactions",
     label: "All Transactions",
   },
 
   {
+    iconUrl: "/assets/icons/lending.svg",
     route: "/lending",
     label: "Lending",
   },

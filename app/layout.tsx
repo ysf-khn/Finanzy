@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import { ThemeProvider } from "./components/theme-provider";
 
 // const inter = Inter({ subsets: ["latin"] });
 const lato = Open_Sans({
@@ -30,7 +31,16 @@ export default function RootLayout({
       }}
     >
       <html lang="en">
-        <body className={lato.className}>{children}</body>
+        <body className={lato.className}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </body>
       </html>
     </ClerkProvider>
   );

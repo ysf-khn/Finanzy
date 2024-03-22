@@ -15,6 +15,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Image from "next/image";
+import { TrendingDown, TrendingUp } from "lucide-react";
 
 const Page = async () => {
   const { userId } = auth();
@@ -28,12 +29,14 @@ const Page = async () => {
       <div className="flex items-center justify-between font-bold mb-8 text-xl">
         <p>All Transactions</p>
         <Link href="/add-transaction">
-          <Button className="p-6 bg-slate-900">Add Transaction</Button>
+          <Button className="p-6 primary-gradient text-slate-100">
+            Add Transaction
+          </Button>
         </Link>
       </div>
 
       <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
+        <TableCaption>A list of your recent transactions.</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className=""></TableHead>
@@ -48,7 +51,7 @@ const Page = async () => {
           {result.transactions.map((item) => (
             <TableRow>
               <TableCell className="font-medium">
-                <Image
+                {/* <Image
                   src={`/${
                     item.transactionType === "income"
                       ? "increase.svg"
@@ -57,17 +60,28 @@ const Page = async () => {
                   height={36}
                   width={36}
                   alt="Icon"
-                />
+                /> */}
+                {item.transactionType === "income" ? (
+                  <TrendingUp />
+                ) : (
+                  <TrendingDown />
+                )}
               </TableCell>
-              <TableCell className="font-medium">{item.name}</TableCell>
+              <TableCell className="font-medium line-clamp-1">
+                {item.name}
+              </TableCell>
               <TableCell>
                 <span className="font-bold">
                   {item.transactionType === "income" ? "+" : "-"}
                 </span>{" "}
                 ₹{item.amount}
               </TableCell>
-              <TableCell>{item.category || "None"}</TableCell>
-              <TableCell>{item.paymentMode || "Not Specified"}</TableCell>
+              <TableCell className="capitalize">
+                {item.category || "None"}
+              </TableCell>
+              <TableCell className="capitalize">
+                {item.paymentMode || "Not Specified"}
+              </TableCell>
               <TableCell className="text-right">
                 {item.notes || "Empty"}
               </TableCell>
