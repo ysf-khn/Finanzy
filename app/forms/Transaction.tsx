@@ -30,6 +30,7 @@ import {
 import { ExpenseSchema } from "@/lib/validations";
 import { createTransaction } from "@/lib/actions/transaction.action";
 import { categoryItems, paymentModes } from "@/constants";
+import { useRouter } from "next/navigation";
 
 interface TransactionParams {
   mongoUser: string;
@@ -38,6 +39,7 @@ interface TransactionParams {
 
 const Transaction = ({ mongoUser, transactionType }: TransactionParams) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof ExpenseSchema>>({
@@ -46,7 +48,7 @@ const Transaction = ({ mongoUser, transactionType }: TransactionParams) => {
       name: "",
       amount: 0,
       category: "",
-      mode: "",
+      paymentMode: "",
       notes: "",
     },
   });
@@ -61,12 +63,13 @@ const Transaction = ({ mongoUser, transactionType }: TransactionParams) => {
         name: values.name,
         amount: values.amount,
         category: values.category,
-        paymentMode: values.mode,
+        paymentMode: values.paymentMode,
         notes: values.notes,
         transactionType: transactionType,
         user: JSON.parse(mongoUser),
         // path:''
       });
+      router.push("/transactions");
     } catch (error) {
       console.log(error);
       throw error;
@@ -157,7 +160,7 @@ const Transaction = ({ mongoUser, transactionType }: TransactionParams) => {
 
         <FormField
           control={form.control}
-          name="mode"
+          name="paymentMode"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Payment mode</FormLabel>

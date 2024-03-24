@@ -30,3 +30,11 @@ function getOrdinalSuffix(day: number): string {
       return "th";
   }
 }
+
+export function formatNumberWithCommas(number: number): string {
+  // Use toLocaleString for comma separation (adjust options as needed)
+  return number.toLocaleString("en-US", {
+    minimumFractionDigits: 0, // Set to 2 for decimals (adjust as needed)
+    maximumFractionDigits: 0, // Set to 2 for decimals (adjust as needed)
+  });
+}

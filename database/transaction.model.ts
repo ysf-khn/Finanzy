@@ -8,6 +8,7 @@ export interface ITransaction extends Document {
   notes: string;
   transactionType: string;
   user: Schema.Types.ObjectId;
+  createdAt: Date;
 }
 
 const TransactionSchema = new Schema({
@@ -18,6 +19,7 @@ const TransactionSchema = new Schema({
   notes: { type: String },
   transactionType: { type: String, required: true },
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  createdAt: { type: Date, default: Date.now },
 });
 
 const Transaction =

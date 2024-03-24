@@ -2,6 +2,7 @@
 
 import User, { IUser } from "@/database/user.model";
 import { connectDB } from "../mongoose";
+import Transaction from "@/database/transaction.model";
 
 interface UserDataParams {
   clerkId: string;
@@ -30,6 +31,114 @@ export async function getUserById(params: GetUserByIdParams) {
     if (!user) return console.log("User not found");
 
     return user;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getOverallIncome(params: GetUserByIdParams) {
+  try {
+    connectDB();
+
+    const { userId } = params;
+
+    const pipeline = [
+      {
+        $match: {
+          // @ts-ignore
+          user: userId._id,
+          transactionType: "income",
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalIncome: { $sum: "$amount" },
+        },
+      },
+    ];
+
+    const results = await Transaction.aggregate(pipeline);
+    const totalIncome = results[0]?.totalIncome || 0;
+    return totalIncome;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getOverallExpenses(params: GetUserByIdParams) {
+  try {
+    connectDB();
+
+    const { userId } = params;
+
+    const pipeline = [
+      {
+        $match: {
+          // @ts-ignore
+          user: userId._id,
+          transactionType: "expense",
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalExpenses: { $sum: "$amount" },
+        },
+      },
+    ];
+
+    const results = await Transaction.aggregate(pipeline);
+    const totalExpenses = results[0]?.totalExpenses || 0;
+    return totalExpenses;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getOverallBalance(params: GetUserByIdParams) {
+  try {
+    connectDB();
+
+    const { userId } = params;
+
+    const pipeline = [
+      {
+        $match: {
+          // @ts-ignore
+          user: userId._id,
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalIncome: {
+            $sum: {
+              $cond: [{ $eq: ["$transactionType", "income"] }, "$amount", 0],
+            },
+          },
+          totalExpenses: {
+            $sum: {
+              $cond: [{ $eq: ["$transactionType", "expense"] }, "$amount", 0],
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          netIncome: { $subtract: ["$totalIncome", "$totalExpenses"] },
+          _id: 0,
+        },
+      },
+    ];
+
+    const results = await Transaction.aggregate(pipeline);
+    const netIncome = results[0]?.netIncome || 0;
+
+    return netIncome;
   } catch (error) {
     console.log(error);
     throw error;

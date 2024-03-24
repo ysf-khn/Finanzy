@@ -3,6 +3,7 @@ import { UserButton, auth } from "@clerk/nextjs";
 import Link from "next/link";
 import React from "react";
 import { DarkModeToggle } from "../../DarkModeToggle";
+import { DollarSign } from "lucide-react";
 
 const Navbar = async () => {
   const { userId } = auth();
@@ -12,10 +13,10 @@ const Navbar = async () => {
   return (
     <nav className=" py-6 px-12 flex items-center justify-between fixed z-50 shadow-sm w-full bg-white dark:bg-zinc-900">
       <Link href="/" className="">
-        <h1 className="text-3xl font-bold ">
+        <h1 className="text-3xl font-bold flex items-center">
           {" "}
-          <span className="bg-black dark:bg-slate-50 rounded-full">
-            💲
+          <span className="bg-black p-3 dark:bg-slate-50 rounded-full mr-2">
+            <DollarSign color="green" size={26} />
           </span>{" "}
           <span className="text-gradient">Finanzy</span>
         </h1>

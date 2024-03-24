@@ -4,6 +4,7 @@ import { IUser } from "@/database/user.model";
 import { Schema } from "mongoose";
 import { connectDB } from "../mongoose";
 import Transaction from "@/database/transaction.model";
+import { revalidatePath } from "next/cache";
 
 interface CreateTransactionParams {
   name: string;
@@ -18,15 +19,21 @@ interface CreateTransactionParams {
 
 interface GetUserTransactionsParams {
   userId: string | null;
+  limit?: number;
 }
 
 export async function getUserTransactions(params: GetUserTransactionsParams) {
   try {
     connectDB();
 
-    const { userId } = params;
+    const { userId, limit } = params;
 
-    const userTransactions = await Transaction.find({ user: userId });
+    const userTransactions = await Transaction.find({ user: userId })
+      .sort({
+        createdAt: -1,
+      })
+      // @ts-ignore
+      .limit(limit);
 
     return { transactions: userTransactions };
   } catch (error) {
@@ -58,6 +65,8 @@ export async function createTransaction(params: CreateTransactionParams) {
       transactionType,
       user,
     });
+
+    revalidatePath("/transactions");
   } catch (error) {
     console.log(error);
     throw error;

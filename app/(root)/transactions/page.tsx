@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Image from "next/image";
+
 import { TrendingDown, TrendingUp } from "lucide-react";
 
 const Page = async () => {
@@ -28,67 +28,66 @@ const Page = async () => {
     <section className="w-full px-6">
       <div className="flex items-center justify-between font-bold mb-8 text-xl">
         <p>All Transactions</p>
-        <Link href="/add-transaction">
-          <Button className="p-6 primary-gradient text-slate-100">
-            Add Transaction
+        <div className="flex items-center gap-4">
+          <Link href="/add-transaction">
+            <Button className="p-6 primary-gradient text-slate-100">
+              Add Transaction
+            </Button>
+          </Link>
+          <Button className="p-6 bg-white text-black border border-green-500">
+            Download Statement
           </Button>
-        </Link>
+        </div>
       </div>
 
-      <Table>
-        <TableCaption>A list of your recent transactions.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className=""></TableHead>
-            <TableHead className="w-[150px]">Name</TableHead>
-            <TableHead>Amount</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead>Payment Method</TableHead>
-            <TableHead className="text-right">Notes</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {result.transactions.map((item) => (
+      {result.transactions.length > 0 ? (
+        <Table>
+          <TableCaption>A list of your recent transactions.</TableCaption>
+          <TableHeader>
             <TableRow>
-              <TableCell className="font-medium">
-                {/* <Image
-                  src={`/${
-                    item.transactionType === "income"
-                      ? "increase.svg"
-                      : "decrease.svg"
-                  }`}
-                  height={36}
-                  width={36}
-                  alt="Icon"
-                /> */}
-                {item.transactionType === "income" ? (
-                  <TrendingUp />
-                ) : (
-                  <TrendingDown />
-                )}
-              </TableCell>
-              <TableCell className="font-medium line-clamp-1">
-                {item.name}
-              </TableCell>
-              <TableCell>
-                <span className="font-bold">
-                  {item.transactionType === "income" ? "+" : "-"}
-                </span>{" "}
-                ₹{item.amount}
-              </TableCell>
-              <TableCell className="capitalize">
-                {item.category || "None"}
-              </TableCell>
-              <TableCell className="capitalize">
-                {item.paymentMode || "Not Specified"}
-              </TableCell>
-              <TableCell className="text-right">
-                {item.notes || "Empty"}
-              </TableCell>
+              <TableHead className=""></TableHead>
+              <TableHead className="w-[150px]">Name</TableHead>
+              <TableHead>Amount</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead>Payment Method</TableHead>
+              <TableHead className="text-right">Notes</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {result.transactions.map((item) => (
+              <TableRow className="cursor-pointer">
+                <TableCell className="font-medium">
+                  {item.transactionType === "income" ? (
+                    <TrendingUp />
+                  ) : (
+                    <TrendingDown />
+                  )}
+                </TableCell>
+                <TableCell className="font-medium ">
+                  <p className="line-clamp-1">{item.name}</p>
+                </TableCell>
+                <TableCell>
+                  <span className="font-bold">
+                    {item.transactionType === "income" ? "+" : "-"}
+                  </span>{" "}
+                  ₹{item.amount}
+                </TableCell>
+                <TableCell className="capitalize">
+                  {item.category || "None"}
+                </TableCell>
+                <TableCell className="capitalize">
+                  {item.paymentMode || "Not Specified"}
+                </TableCell>
+                <TableCell className="text-right w-1/4">
+                  <p className="line-clamp-1">{item.notes || "Empty"}</p>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      ) : (
+        <div>No transactions yet. Add some now!</div>
+      )}
     </section>
   );
 };

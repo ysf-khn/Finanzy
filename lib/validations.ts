@@ -7,6 +7,6 @@ export const ExpenseSchema = z.object({
     .transform((v) => Number(v) || 0)
     .pipe(z.number().min(0)),
   category: z.string(),
-  mode: z.string(),
+  paymentMode: z.string(),
   notes: z.string(),
 });
