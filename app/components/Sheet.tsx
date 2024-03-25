@@ -28,7 +28,7 @@ const SheetComp = () => {
       {/* @ts-ignore */}
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Are you absolutely sure?</SheetTitle>
+          <SheetTitle>Configure current cycle</SheetTitle>
           <SheetDescription>
             <DatePickerWithRange />
           </SheetDescription>
