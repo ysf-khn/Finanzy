@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { format } from "date-fns";
 import { CalendarDays } from "lucide-react";
 // @ts-ignore
@@ -20,13 +20,14 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { createCycle } from "@/lib/actions/cycle.action";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   date: z.object({
@@ -36,13 +37,18 @@ const FormSchema = z.object({
   budget: z
     .string()
     .transform((v) => Number(v) || 0)
-    .pipe(z.number().min(0)),
+    .pipe(z.number().min(1)),
 });
 
-export function DatePickerWithRange({
-  className,
-}: React.HTMLAttributes<HTMLDivElement>) {
+interface props {
+  className?: React.HTMLAttributes<HTMLDivElement>;
+  mongoUser: string;
+}
+
+export function Cycle({ className, mongoUser }: props) {
   const [date, setDate] = useState<DateRange | undefined>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   // let isoToDate: typeof date;
   // let isoFromDate: typeof date;
@@ -55,19 +61,26 @@ export function DatePickerWithRange({
     },
   });
 
-  // useEffect(() => {
-  //   if (date && date.from && date.to) {
-  //     const fromDateNew = new Date(date.from);
-  //     const toDateNew = new Date(date.to);
-  //     // console.log(dateNew);
-  //     isoToDate = toDateNew.toISOString();
-  //     isoFromDate = fromDateNew.toISOString();
-  //     console.log(isoFromDate, isoToDate);
-  //   }
-  // }, [date]);
+  async function onSubmit(values: z.infer<typeof FormSchema>) {
+    console.log(values);
+    setIsSubmitting(true);
+    console.log(mongoUser);
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    try {
+      await createCycle({
+        from: values.date.from,
+        to: values.date.to,
+        budget: values.budget,
+        user: JSON.parse(mongoUser),
+      });
+
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+      throw error;
+    } finally {
+      setIsSubmitting(false);
+    }
     // console.log(isoFromDate, isoToDate);
   }
 
@@ -133,21 +146,16 @@ export function DatePickerWithRange({
             <FormItem>
               <FormLabel>Budget</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="₹"
-                  {...field}
-                  type="number"
-                  min={0}
-                  className="dark:bg-black"
-                />
+                <Input placeholder="₹" {...field} className="dark:bg-black" />
               </FormControl>
 
               <FormMessage />
             </FormItem>
           )}
         />
-
+        {/* <SheetClose asChild> */}
         <Button type="submit">Submit</Button>
+        {/* </SheetClose> */}
       </form>
     </Form>
   );

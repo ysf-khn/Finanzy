@@ -1,7 +1,3 @@
-"use client";
-
-import React, { useState } from "react";
-
 import {
   Sheet,
   SheetContent,
@@ -10,11 +6,14 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { DatePickerWithRange } from "./DateRangeSelector";
+import { Cycle } from "../forms/Cycle";
 
-const SheetComp = () => {
-  const [currentCycle, setCurrentCycle] = useState(false);
+import { auth } from "@clerk/nextjs";
+import { getUserById } from "@/lib/actions/user.action";
+
+const CycleSheet = async () => {
+  const { userId } = auth();
+  const mongoUser = await getUserById({ userId });
 
   return (
     <Sheet>
@@ -30,7 +29,7 @@ const SheetComp = () => {
         <SheetHeader>
           <SheetTitle>Configure current cycle</SheetTitle>
           <SheetDescription>
-            <DatePickerWithRange />
+            <Cycle mongoUser={JSON.stringify(mongoUser)} />
           </SheetDescription>
         </SheetHeader>
       </SheetContent>
@@ -38,4 +37,4 @@ const SheetComp = () => {
   );
 };
 
-export default SheetComp;
+export default CycleSheet;

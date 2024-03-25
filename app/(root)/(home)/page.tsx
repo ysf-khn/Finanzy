@@ -11,24 +11,51 @@ import { formatNumberWithCommas, getFormattedDate } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
 import { DollarSign, PiggyBank, TrendingDown, TrendingUp } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import SheetComp from "@/app/components/Sheet";
+import CycleSheet from "@/app/components/CycleSheet";
+import { getCycle } from "@/lib/actions/cycle.action";
+
+// async function fetchUserData(userId: string | null) {
+//   try {
+//     const [
+//       mongoUser,
+//       transactions,
+//       totalIncome,
+//       totalExpenses,
+//       totalBalance,
+//       cycle,
+//     ] = await Promise.all([
+//       getUserById({ userId }),
+//       getUserTransactions({ userId, limit: 5 }),
+//       getOverallIncome({ userId }),
+//       getOverallExpenses({ userId }),
+//       getOverallBalance({ userId }),
+//       // @ts-ignore
+//       getCycle({ userId }),
+//     ]);
+
+//     // Organize data into a user object
+//     const user = {
+//       ...mongoUser,
+//       transactions,
+//       totalIncome,
+//       totalExpenses,
+//       totalBalance,
+//       cycle,
+//     };
+
+//     return user;
+//   } catch (error) {
+//     console.error("Error fetching user data:", error);
+//     // Handle the error appropriately (e.g., display a user-friendly error message)
+//   }
+// }
 
 const Page = async () => {
-  // const [currentCycle, setCurrentCycle] = useState(true);
-  const currentCycle = false;
   const date = getFormattedDate();
-
   const { userId } = auth();
+
+  // const user = await fetchUserData(userId);
 
   const mongoUser = await getUserById({ userId });
 
@@ -36,6 +63,7 @@ const Page = async () => {
   const totalIncome = await getOverallIncome({ userId: mongoUser });
   const totalExpenses = await getOverallExpenses({ userId: mongoUser });
   const totalBalance = await getOverallBalance({ userId: mongoUser });
+  const cycle = await getCycle({ userId: mongoUser });
 
   return (
     <section className="w-full px-6">
@@ -46,10 +74,7 @@ const Page = async () => {
             <Button className="p-6 primary-gradient">Add Transaction</Button>
           </Link>
 
-          <SheetComp />
-          {/* <Button className="p-6 dark:bg-transparent border text-gradient">
-            {currentCycle ? "Edit Current Cycle" : "Set Current Cycle"}
-          </Button> */}
+          <CycleSheet />
         </div>
       </div>
 
@@ -63,7 +88,7 @@ const Page = async () => {
                   <p>Budget</p>
                   <DollarSign size={20} color="blue" />
                 </div>
-                <p className="text-2xl font-bold">₹45,231.89</p>
+                <p className="text-2xl font-bold">₹{cycle.budget}</p>
               </div>
               <div className="p-8 flex-1 rounded-md border ">
                 <div className="flex items-center justify-between mb-4">
@@ -119,7 +144,7 @@ const Page = async () => {
         <div className="w-1/3">
           <h2 className="text-xl font-semibold mb-6">Recent transactions</h2>
           {result.transactions.length > 0 ? (
-            result.transactions.map((item) => (
+            result.transactions.map((item: any) => (
               <div className="flex items-center justify-between text-lg p-4 border mb-3 rounded-md">
                 <div className="flex gap-2">
                   {item.transactionType === "income" ? (
