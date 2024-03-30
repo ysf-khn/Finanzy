@@ -13,7 +13,11 @@ import { DollarSign, PiggyBank, TrendingDown, TrendingUp } from "lucide-react";
 import Link from "next/link";
 
 import CycleSheet from "@/app/components/CycleSheet";
-import { getCycle } from "@/lib/actions/cycle.action";
+import {
+  getCurrentCycle,
+  getCycleTotalExpenses,
+  getRemainingCycleBalance,
+} from "@/lib/actions/cycle.action";
 
 // async function fetchUserData(userId: string | null) {
 //   try {
@@ -63,7 +67,9 @@ const Page = async () => {
   const totalIncome = await getOverallIncome({ userId: mongoUser });
   const totalExpenses = await getOverallExpenses({ userId: mongoUser });
   const totalBalance = await getOverallBalance({ userId: mongoUser });
-  const cycle = await getCycle({ userId: mongoUser });
+  const cycle = await getCurrentCycle({ userId: mongoUser });
+  const cycleExpenses = await getCycleTotalExpenses({ cycleId: cycle._id });
+  const cycleBalance = await getRemainingCycleBalance({ cycleId: cycle._id });
 
   return (
     <section className="w-full px-6">
@@ -88,21 +94,25 @@ const Page = async () => {
                   <p>Budget</p>
                   <DollarSign size={20} color="blue" />
                 </div>
-                <p className="text-2xl font-bold">₹{cycle.budget}</p>
+                <p className="text-2xl font-bold">
+                  ₹{formatNumberWithCommas(cycle.budget)}
+                </p>
               </div>
               <div className="p-8 flex-1 rounded-md border ">
                 <div className="flex items-center justify-between mb-4">
                   <p>Spent</p>
                   <TrendingDown size={20} color="red" />
                 </div>
-                <p className="text-2xl font-bold">₹45,231.89</p>
+                <p className="text-2xl font-bold">₹{cycleExpenses}</p>
               </div>
               <div className="p-8 flex-1 rounded-md border border-1 ">
                 <div className="flex items-center justify-between mb-4">
                   <p>Balance</p>
                   <PiggyBank size={20} color="green" />
                 </div>
-                <p className="text-2xl font-bold">₹45,231.89</p>
+                <p className="text-2xl font-bold">
+                  ₹{formatNumberWithCommas(cycleBalance)}
+                </p>
               </div>
             </div>
           </div>

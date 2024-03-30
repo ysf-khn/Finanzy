@@ -35,9 +35,14 @@ import { useRouter } from "next/navigation";
 interface TransactionParams {
   mongoUser: string;
   transactionType: string;
+  cycleId: string;
 }
 
-const Transaction = ({ mongoUser, transactionType }: TransactionParams) => {
+const Transaction = ({
+  mongoUser,
+  transactionType,
+  cycleId,
+}: TransactionParams) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
@@ -56,7 +61,7 @@ const Transaction = ({ mongoUser, transactionType }: TransactionParams) => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof ExpenseSchema>) {
     setIsSubmitting(true);
-    console.log(values, mongoUser);
+    console.log(values, mongoUser, cycleId);
     console.log(transactionType);
     try {
       await createTransaction({
@@ -66,6 +71,7 @@ const Transaction = ({ mongoUser, transactionType }: TransactionParams) => {
         paymentMode: values.paymentMode,
         notes: values.notes,
         transactionType: transactionType,
+        cycle: JSON.parse(cycleId),
         user: JSON.parse(mongoUser),
         // path:''
       });
@@ -111,13 +117,7 @@ const Transaction = ({ mongoUser, transactionType }: TransactionParams) => {
                 Amount <span className="text-gradient">*</span>
               </FormLabel>
               <FormControl>
-                <Input
-                  placeholder="₹"
-                  {...field}
-                  type="number"
-                  min={0}
-                  className="dark:bg-black"
-                />
+                <Input placeholder="₹" {...field} className="dark:bg-black" />
               </FormControl>
 
               <FormMessage />

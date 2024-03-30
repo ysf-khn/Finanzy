@@ -5,6 +5,7 @@ import { Schema } from "mongoose";
 import { connectDB } from "../mongoose";
 import Transaction from "@/database/transaction.model";
 import { revalidatePath } from "next/cache";
+import Cycle from "@/database/cycle.model";
 
 interface CreateTransactionParams {
   name: string;
@@ -12,9 +13,9 @@ interface CreateTransactionParams {
   category?: string;
   paymentMode?: string;
   notes?: string;
+  cycle: string;
   transactionType: string;
   user: Schema.Types.ObjectId | IUser;
-  //   path: string;
 }
 
 interface GetUserTransactionsParams {
@@ -52,18 +53,24 @@ export async function createTransaction(params: CreateTransactionParams) {
       category,
       paymentMode,
       notes,
+      cycle,
       transactionType,
       user,
     } = params;
 
-    await Transaction.create({
+    const newTransaction = await Transaction.create({
       name,
       amount,
       category: category ?? "",
       paymentMode: paymentMode ?? "",
       notes: notes ?? "",
       transactionType,
+      cycle,
       user,
+    });
+
+    const cycleObject = await Cycle.findByIdAndUpdate(cycle, {
+      $push: { transactions: newTransaction._id },
     });
 
     revalidatePath("/transactions");

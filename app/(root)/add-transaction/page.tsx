@@ -2,10 +2,12 @@ import { auth } from "@clerk/nextjs";
 import { getUserById } from "@/lib/actions/user.action";
 import Transaction from "@/app/forms/Transaction";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getCurrentCycle } from "@/lib/actions/cycle.action";
 
 const Page = async () => {
   const { userId } = auth();
   const mongoUser = await getUserById({ userId });
+  const cycle = await getCurrentCycle({ userId: mongoUser });
 
   return (
     <section className="w-full px-6">
@@ -35,12 +37,14 @@ const Page = async () => {
           <Transaction
             mongoUser={JSON.stringify(mongoUser)}
             transactionType="income"
+            cycleId={JSON.stringify(cycle._id)}
           />
         </TabsContent>
         <TabsContent value="expense">
           <Transaction
             mongoUser={JSON.stringify(mongoUser)}
             transactionType="expense"
+            cycleId={JSON.stringify(cycle._id)}
           />
         </TabsContent>
       </Tabs>

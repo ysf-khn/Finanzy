@@ -26,7 +26,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createCycle } from "@/lib/actions/cycle.action";
+import { createCycle, getCurrentCycle } from "@/lib/actions/cycle.action";
 import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
@@ -67,6 +67,9 @@ export function Cycle({ className, mongoUser }: props) {
     console.log(mongoUser);
 
     try {
+      if (await getCurrentCycle({ userId: JSON.parse(mongoUser) }))
+        return console.log("Cycle already exists");
+
       await createCycle({
         from: values.date.from,
         to: values.date.to,
