@@ -8,5 +8,6 @@ export const ExpenseSchema = z.object({
     .pipe(z.number().min(0)),
   category: z.string(),
   paymentMode: z.string(),
+  transactionType: z.string(),
   notes: z.string(),
 });

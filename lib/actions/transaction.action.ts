@@ -23,6 +23,29 @@ interface GetUserTransactionsParams {
   limit?: number;
 }
 
+interface DeleteTransactionParams {
+  transactionId: string;
+}
+
+interface GetTransactionByIdParams {
+  transactionId: string;
+}
+
+export async function getTransactionById(params: GetTransactionByIdParams) {
+  try {
+    connectDB();
+
+    const { transactionId } = params;
+
+    const transaction = await Transaction.findById(transactionId);
+
+    return transaction;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
 export async function getUserTransactions(params: GetUserTransactionsParams) {
   try {
     connectDB();
@@ -73,7 +96,33 @@ export async function createTransaction(params: CreateTransactionParams) {
       $push: { transactions: newTransaction._id },
     });
 
-    revalidatePath("/transactions");
+    revalidatePath("/payments");
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function deleteTransaction(params: DeleteTransactionParams) {
+  try {
+    connectDB();
+
+    const { transactionId } = params;
+
+    const transaction = await Transaction.findById(transactionId);
+
+    if (!transaction) {
+      throw new Error("Transaction not found");
+    }
+
+    await transaction.deleteOne({ _id: transactionId });
+
+    await Cycle.updateMany(
+      { _id: transaction.cycle },
+      { $pull: { transactions: transactionId } }
+    );
+
+    revalidatePath("/payments");
   } catch (error) {
     console.log(error);
     throw error;

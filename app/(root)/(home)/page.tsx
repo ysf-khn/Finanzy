@@ -19,42 +19,6 @@ import {
   getRemainingCycleBalance,
 } from "@/lib/actions/cycle.action";
 
-// async function fetchUserData(userId: string | null) {
-//   try {
-//     const [
-//       mongoUser,
-//       transactions,
-//       totalIncome,
-//       totalExpenses,
-//       totalBalance,
-//       cycle,
-//     ] = await Promise.all([
-//       getUserById({ userId }),
-//       getUserTransactions({ userId, limit: 5 }),
-//       getOverallIncome({ userId }),
-//       getOverallExpenses({ userId }),
-//       getOverallBalance({ userId }),
-//       // @ts-ignore
-//       getCycle({ userId }),
-//     ]);
-
-//     // Organize data into a user object
-//     const user = {
-//       ...mongoUser,
-//       transactions,
-//       totalIncome,
-//       totalExpenses,
-//       totalBalance,
-//       cycle,
-//     };
-
-//     return user;
-//   } catch (error) {
-//     console.error("Error fetching user data:", error);
-//     // Handle the error appropriately (e.g., display a user-friendly error message)
-//   }
-// }
-
 const Page = async () => {
   const date = getFormattedDate();
   const { userId } = auth();

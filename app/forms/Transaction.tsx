@@ -55,11 +55,13 @@ const Transaction = ({
       category: "",
       paymentMode: "",
       notes: "",
+      transactionType: transactionType,
     },
   });
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof ExpenseSchema>) {
+    console.log("submitting");
     setIsSubmitting(true);
     console.log(values, mongoUser, cycleId);
     console.log(transactionType);
@@ -70,10 +72,9 @@ const Transaction = ({
         category: values.category,
         paymentMode: values.paymentMode,
         notes: values.notes,
-        transactionType: transactionType,
+        transactionType,
         cycle: JSON.parse(cycleId),
         user: JSON.parse(mongoUser),
-        // path:''
       });
       router.push("/transactions");
     } catch (error) {
