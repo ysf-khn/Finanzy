@@ -8,7 +8,7 @@ import {
   getUserById,
 } from "@/lib/actions/user.action";
 import { formatNumberWithCommas, getFormattedDate } from "@/lib/utils";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { DollarSign, PiggyBank, TrendingDown, TrendingUp } from "lucide-react";
 import Link from "next/link";
 
@@ -18,6 +18,13 @@ import {
   getCycleTotalExpenses,
   getRemainingCycleBalance,
 } from "@/lib/actions/cycle.action";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Finanzy | Personalized Expense Management",
+  description:
+    "Finanzy helps you personalize your budget, completely your way!",
+};
 
 const Page = async () => {
   const date = getFormattedDate();

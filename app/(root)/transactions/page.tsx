@@ -1,10 +1,16 @@
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import { getUserById } from "@/lib/actions/user.action";
 import { getUserTransactions } from "@/lib/actions/transaction.action";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Finanzy | All Transactions",
+  description: "View and manage your transactions here",
+};
 
 export default async function DemoPage() {
   const { userId } = auth();
