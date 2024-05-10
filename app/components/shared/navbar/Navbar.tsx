@@ -1,9 +1,10 @@
 import User from "@/database/user.model";
-import { UserButton, auth } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import React from "react";
 import { DarkModeToggle } from "../../DarkModeToggle";
 import { DollarSign } from "lucide-react";
+import { auth } from "@clerk/nextjs/server";
 
 const Navbar = async () => {
   const { userId } = auth();

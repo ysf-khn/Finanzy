@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/sheet";
 import { Cycle } from "../forms/Cycle";
 
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { getUserById } from "@/lib/actions/user.action";
 
 const CycleSheet = async () => {
