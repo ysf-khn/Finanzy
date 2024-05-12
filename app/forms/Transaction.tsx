@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,54 +28,94 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { ExpenseSchema } from "@/lib/validations";
-import { createTransaction } from "@/lib/actions/transaction.action";
-import { categoryItems, paymentModes } from "@/constants";
+import {
+  createTransaction,
+  editTransaction,
+} from "@/lib/actions/transaction.action";
+import { categoryItems, paymentModes, transactiontypeItems } from "@/constants";
 import { useRouter } from "next/navigation";
 
 interface TransactionParams {
-  mongoUser: string;
-  transactionType: string;
-  cycleId: string;
+  mongoUser?: string;
+  mongoUserId?: string;
+  transactionType?: string;
+  cycleId?: string;
+  type?: string;
+  transactionDetails?: string;
 }
 
 const Transaction = ({
   mongoUser,
+  mongoUserId,
   transactionType,
   cycleId,
+  type,
+  transactionDetails,
 }: TransactionParams) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+
+  const parsedTransactionDetails =
+    transactionDetails && JSON.parse(transactionDetails || "");
+
+  console.log("HERE");
+  console.log(parsedTransactionDetails);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof ExpenseSchema>>({
     resolver: zodResolver(ExpenseSchema),
     defaultValues: {
-      name: "",
-      amount: 0,
-      category: "",
-      paymentMode: "",
-      notes: "",
-      transactionType: transactionType,
+      name: parsedTransactionDetails?.name || "",
+      amount: parsedTransactionDetails?.amount || 0,
+      category: parsedTransactionDetails?.category || "",
+      paymentMode: parsedTransactionDetails?.paymentMode || "",
+      notes: parsedTransactionDetails?.notes,
+      transactionType:
+        parsedTransactionDetails?.transactionType || transactionType,
     },
   });
+
+  useEffect(() => {
+    if (parsedTransactionDetails) {
+      form.setValue("amount", parsedTransactionDetails.amount.toString());
+      form.setValue("notes", parsedTransactionDetails.notes);
+    }
+  }, [parsedTransactionDetails, form]);
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof ExpenseSchema>) {
     console.log("submitting");
     setIsSubmitting(true);
+
     console.log(values, mongoUser, cycleId);
     console.log(transactionType);
+
     try {
-      await createTransaction({
-        name: values.name,
-        amount: values.amount,
-        category: values.category,
-        paymentMode: values.paymentMode,
-        notes: values.notes,
-        transactionType,
-        cycle: JSON.parse(cycleId),
-        user: JSON.parse(mongoUser),
-      });
+      if (type === "edit") {
+        await editTransaction({
+          transactionId: parsedTransactionDetails._id,
+          name: values.name,
+          amount: values.amount,
+          category: values.category,
+          paymentMode: values.paymentMode,
+          notes: values.notes,
+          transactionType: values.transactionType,
+        });
+
+        router.push("/transactions");
+      } else {
+        await createTransaction({
+          name: values.name,
+          amount: values.amount,
+          category: values.category,
+          paymentMode: values.paymentMode,
+          notes: values.notes,
+          transactionType,
+          cycle: JSON.parse(cycleId),
+          user: JSON.parse(mongoUser),
+        });
+      }
+
       router.push("/transactions");
     } catch (error) {
       console.log(error);
@@ -125,6 +165,40 @@ const Transaction = ({
             </FormItem>
           )}
         />
+
+        {type === "edit" && (
+          <FormField
+            control={form.control}
+            name="transactionType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Transaction Type</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger className="dark:bg-black">
+                      <SelectValue placeholder="Select the transaction type" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {transactiontypeItems.map((transacType) => (
+                      <SelectItem
+                        key={transacType.value}
+                        value={transacType.value}
+                        className="cursor-pointer"
+                      >
+                        {transacType.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <FormField
           control={form.control}
@@ -193,6 +267,7 @@ const Transaction = ({
               <FormControl>
                 <Textarea
                   placeholder="Add notes"
+                  {...field}
                   onChange={field.onChange}
                   className="dark:bg-black"
                 />
@@ -207,7 +282,11 @@ const Transaction = ({
           disabled={isSubmitting}
           className="primary-gradient text-slate-100"
         >
-          {transactionType === "income" ? "Add Income" : "Add Expense"}
+          {type === "edit"
+            ? "Save Changes"
+            : transactionType === "income"
+            ? "Add Income"
+            : "Add Expense"}
         </Button>
       </form>
     </Form>

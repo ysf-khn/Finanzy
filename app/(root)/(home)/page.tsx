@@ -30,6 +30,8 @@ const Page = async () => {
   const date = getFormattedDate();
   const { userId } = auth();
 
+  console.log(userId);
+
   // const user = await fetchUserData(userId);
 
   const mongoUser = await getUserById({ userId });

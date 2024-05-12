@@ -13,7 +13,11 @@ export const metadata: Metadata = {
 };
 
 export default async function DemoPage() {
+  // auth().protect();
+
   const { userId } = auth();
+
+  console.log(userId);
 
   const mongoUser = await getUserById({ userId });
 

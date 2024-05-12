@@ -31,6 +31,16 @@ interface GetTransactionByIdParams {
   transactionId: string;
 }
 
+interface EditTransactionParams {
+  transactionId: string;
+  name: string;
+  amount: number;
+  transactionType: string;
+  category: string;
+  paymentMode: string;
+  notes: string;
+}
+
 export async function getTransactionById(params: GetTransactionByIdParams) {
   try {
     connectDB();
@@ -60,6 +70,42 @@ export async function getUserTransactions(params: GetUserTransactionsParams) {
       .limit(limit);
 
     return { transactions: userTransactions };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function editTransaction(params: EditTransactionParams) {
+  try {
+    connectDB();
+
+    const {
+      transactionId,
+      name,
+      amount,
+      transactionType,
+      category,
+      paymentMode,
+      notes,
+    } = params;
+
+    const transaction = await Transaction.findById(transactionId);
+
+    if (!transaction) {
+      throw new Error("Transaction not found");
+    }
+
+    transaction.name = name;
+    transaction.amount = amount;
+    transaction.transactionType = transactionType;
+    transaction.category = category;
+    transaction.paymentMode = paymentMode;
+    transaction.notes = notes;
+
+    await transaction.save();
+
+    revalidatePath("/transactions");
   } catch (error) {
     console.log(error);
     throw error;

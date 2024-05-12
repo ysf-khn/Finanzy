@@ -17,6 +17,17 @@ export const sidebarLinks = [
   },
 ];
 
+export const transactiontypeItems = [
+  {
+    name: "Income",
+    value: "income",
+  },
+  {
+    name: "Expense",
+    value: "expense",
+  },
+];
+
 export const categoryItems = [
   {
     name: "Grocery",
