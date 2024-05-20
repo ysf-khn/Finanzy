@@ -34,6 +34,7 @@ import {
 } from "@/lib/actions/transaction.action";
 import { categoryItems, paymentModes, transactiontypeItems } from "@/constants";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 interface TransactionParams {
   mongoUser?: string;
@@ -54,19 +55,17 @@ const Transaction = ({
 }: TransactionParams) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  const { toast } = useToast();
 
   const parsedTransactionDetails =
     transactionDetails && JSON.parse(transactionDetails || "");
-
-  console.log("HERE");
-  console.log(parsedTransactionDetails);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof ExpenseSchema>>({
     resolver: zodResolver(ExpenseSchema),
     defaultValues: {
       name: parsedTransactionDetails?.name || "",
-      amount: parsedTransactionDetails?.amount || 0,
+      amount: parsedTransactionDetails?.amount.toString() || 0,
       category: parsedTransactionDetails?.category || "",
       paymentMode: parsedTransactionDetails?.paymentMode || "",
       notes: parsedTransactionDetails?.notes,
@@ -76,10 +75,10 @@ const Transaction = ({
   });
 
   useEffect(() => {
-    if (parsedTransactionDetails) {
-      form.setValue("amount", parsedTransactionDetails.amount.toString());
-      form.setValue("notes", parsedTransactionDetails.notes);
-    }
+    // if (parsedTransactionDetails) {
+    //   form.setValue("amount", parsedTransactionDetails.amount.toString());
+    //   form.setValue("notes", parsedTransactionDetails.notes);
+    // }
   }, [parsedTransactionDetails, form]);
 
   // 2. Define a submit handler.
@@ -101,7 +100,7 @@ const Transaction = ({
           notes: values.notes,
           transactionType: values.transactionType,
         });
-
+        toast({ title: "Transaction edited successfully", variant: "default" });
         router.push("/transactions");
       } else {
         await createTransaction({
@@ -113,6 +112,10 @@ const Transaction = ({
           transactionType,
           cycle: JSON.parse(cycleId),
           user: JSON.parse(mongoUser),
+        });
+        toast({
+          title: "Transaction created successfully",
+          variant: "default",
         });
       }
 
@@ -127,7 +130,7 @@ const Transaction = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 ">
         <FormField
           control={form.control}
           name="name"

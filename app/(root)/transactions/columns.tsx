@@ -1,6 +1,10 @@
 "use client";
 
-import { timeAgo } from "@/lib/utils";
+import {
+  formatNumberWithCommas,
+  formatStatementTime,
+  timeAgo,
+} from "@/lib/utils";
 import { ExpenseSchema } from "@/lib/validations";
 import { ColumnDef } from "@tanstack/react-table";
 import { TrendingDown, TrendingUp } from "lucide-react";
@@ -15,9 +19,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import { deleteTransaction } from "@/lib/actions/transaction.action";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "@/components/ui/use-toast";
+import { useState } from "react";
+// import { useToast } from "@/components/ui/use-toast";
 
 export const columns: ColumnDef<typeof ExpenseSchema>[] = [
   {
@@ -25,9 +42,9 @@ export const columns: ColumnDef<typeof ExpenseSchema>[] = [
     id: "null",
     cell: ({ row }) => {
       return row.original?.transactionType === "income" ? (
-        <TrendingUp />
+        <TrendingUp className="text-green-500" />
       ) : (
-        <TrendingDown />
+        <TrendingDown className="text-red-500" />
       );
     },
   },
@@ -37,7 +54,9 @@ export const columns: ColumnDef<typeof ExpenseSchema>[] = [
     cell: ({ row }) => {
       return (
         <div className="">
-          <p className="line-clamp-1 mb-1.5">{row.original.name}</p>
+          <div className="line-clamp-1 mb-1.5">
+            <p className="max-w-[100px]">{row.original.name}</p>
+          </div>
           <p className="text-slate-500">{timeAgo(row.original.createdAt)}</p>
         </div>
       );
@@ -85,17 +104,22 @@ export const columns: ColumnDef<typeof ExpenseSchema>[] = [
 
   {
     accessorKey: "notes",
-    header: () => <div className="text-right">Notes</div>,
+    header: () => <div className="text-right max-w-[200px]">Notes</div>,
 
     cell: ({ row }) => {
       const notes: string = row.getValue("notes") || "Empty";
 
-      return <div className="text-right line-clamp-1">{notes}</div>;
+      return (
+        <div className="text-right line-clamp-1">
+          <p className="max-w-[200px]"> {notes}</p>
+        </div>
+      );
     },
   },
   {
     id: "actions",
     cell: ({ row }) => {
+      const [dialogOpen, setDialogOpen] = useState(false);
       const transaction = row.original;
       const router = useRouter();
 
@@ -103,33 +127,98 @@ export const columns: ColumnDef<typeof ExpenseSchema>[] = [
         router.push(`/transaction/edit/${transaction._id}`);
       };
 
+      const showTransactionDialog = () => {
+        setDialogOpen(true);
+      };
+
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            {/* <Link href="/transaction/edit"> */}
-            <DropdownMenuItem className="cursor-pointer" onClick={handleEdit}>
-              Edit
-            </DropdownMenuItem>
-            {/* </Link> */}
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => {
-                deleteTransaction({ transactionId: transaction._id });
-                console.log(transaction);
-              }}
-            >
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        // <>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen} asChild>
+          <DialogContent className="max-sm:w-[300px]  max-sm:rounded-md">
+            <DialogHeader className="p-2 max-sm:text-left">
+              <DialogTitle className="mb-3">{transaction.name}</DialogTitle>
+              {/* <DialogDescription className="space-y-2"> */}
+              <div className="max-sm:text-sm space-y-2">
+                <p>
+                  <strong>Type:</strong>{" "}
+                  <span
+                    className={`${
+                      transaction.transactionType === "income"
+                        ? "text-green-500"
+                        : "text-red-500"
+                    } capitalize`}
+                  >
+                    {transaction.transactionType}
+                  </span>
+                </p>
+                <p>
+                  <strong>Amount:</strong> Rs.
+                  {formatNumberWithCommas(transaction.amount)}
+                </p>
+                <p>
+                  <strong>Added on: </strong>
+                  {formatStatementTime(transaction.createdAt)}
+                </p>
+                <p>
+                  <strong>Category:</strong>{" "}
+                  <span className="capitalize">
+                    {transaction.category || "None"}
+                  </span>
+                </p>
+                <p>
+                  <strong>Payment Mode:</strong>{" "}
+                  <span className="capitalize">
+                    {transaction.paymentmode || "Not Specified"}
+                  </span>
+                </p>
+                <p>
+                  <strong>Notes:</strong> {transaction.notes}
+                </p>
+              </div>
+              {/* </DialogDescription> */}
+            </DialogHeader>
+          </DialogContent>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {/* <Link href="/transaction/edit"> */}
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={showTransactionDialog}
+              >
+                View Details
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" onClick={handleEdit}>
+                Edit
+              </DropdownMenuItem>
+              {/* </Link> */}
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => {
+                  deleteTransaction({ transactionId: transaction._id });
+                  // const { toast } = useToast();
+
+                  toast({
+                    title: "Transaction deleted successfully",
+                  });
+                  console.log(transaction);
+                }}
+              >
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </Dialog>
+
+        // </>
       );
     },
   },

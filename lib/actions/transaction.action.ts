@@ -138,7 +138,7 @@ export async function createTransaction(params: CreateTransactionParams) {
       user,
     });
 
-    const cycleObject = await Cycle.findByIdAndUpdate(cycle, {
+    await Cycle.findByIdAndUpdate(cycle, {
       $push: { transactions: newTransaction._id },
     });
 

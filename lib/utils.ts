@@ -16,6 +16,16 @@ export const getFormattedDate = (): string => {
   return `${day}, ${month} ${date}${ordinalSuffix}`;
 };
 
+export const getCycleFormattedDate = (cycleDateIn: any): string => {
+  const cycleDate = new Date(cycleDateIn);
+  const date = cycleDate.getDate();
+  const month = cycleDate.toLocaleDateString("en-US", { month: "short" });
+
+  const ordinalSuffix = getOrdinalSuffix(date);
+
+  return `${month} ${date}${ordinalSuffix}`;
+};
+
 function getOrdinalSuffix(day: number): string {
   if (day > 3 && day < 21) return "th";
   const unitsDigit = day % 10;
@@ -60,4 +70,39 @@ export function timeAgo(date: Date): string {
   else if (weeks === 1) return `${weeks} week ago`;
   else if (weeks < 52) return `${weeks} weeks ago`;
   else return `${years} years ago`;
+}
+
+export function formatStatementTime(timeString: string): string {
+  const date = new Date(timeString);
+  const options = {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  } as const;
+  const formattedTime = date.toLocaleString("en-US", options);
+  const [date_, time] = formattedTime.split("at ");
+  const [month, day, year] = date_.split(" ");
+  const [hourMinute, amPm] = time.split(" ");
+  const formattedDate = `${day.substring(
+    0,
+    day.length - 1
+  )} ${month} ${year}, ${hourMinute} ${amPm.toLowerCase()}`;
+  return formattedDate;
+}
+
+export function compareCycleDateToCurrentDate(dateString: string): number {
+  const cycleDate = new Date(dateString);
+
+  const currentDate = new Date();
+
+  if (cycleDate > currentDate) {
+    return 1;
+  } else if (cycleDate < currentDate) {
+    return -1;
+  } else {
+    return 0;
+  }
 }

@@ -15,7 +15,7 @@ const Page = async ({ params }: ParamProps) => {
         <p>Edit Transaction</p>
       </div>
 
-      <div className="w-1/2 bg-white dark:bg-zinc-900 p-4 rounded-sm shadow-sm mx-auto">
+      <div className="md:w-1/2 bg-white dark:bg-zinc-900 p-4 rounded-sm shadow-sm mx-auto">
         <Transaction type="edit" transactionDetails={JSON.stringify(result)} />
       </div>
     </section>

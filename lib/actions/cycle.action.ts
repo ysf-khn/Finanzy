@@ -5,12 +5,21 @@ import { connectDB } from "../mongoose";
 import { IUser } from "@/database/user.model";
 import Cycle, { ICycle } from "@/database/cycle.model";
 import Transaction from "@/database/transaction.model";
+import { revalidatePath } from "next/cache";
+import { string } from "zod";
 
 interface CreateCycleParams {
   from: Date;
   to: Date;
   budget: number;
   user: Schema.Types.ObjectId | IUser;
+}
+
+interface EditCycleParams {
+  cycleId: string;
+  from: Date;
+  to: Date;
+  budget: number;
 }
 
 interface GetCycleParams {
@@ -24,11 +33,13 @@ interface GetCycleExpensesParams {
 export async function getCurrentCycle(params: GetCycleParams) {
   try {
     connectDB();
-
     const { userId } = params;
 
-    const cycle = await Cycle.findOne({ user: userId });
-    return cycle;
+    const cycle = await Cycle.findOne({ user: userId })
+      .sort({ to: -1 })
+      .limit(1);
+    console.log("LATEST  CYCLE ", cycle);
+    return JSON.parse(JSON.stringify(cycle));
   } catch (error) {
     console.log(error);
     throw error;
@@ -98,15 +109,39 @@ export async function createCycle(params: CreateCycleParams) {
     connectDB();
 
     const { from, to, budget, user } = params;
-    console.log("running");
-    const existingCycle = await Cycle.find({ user });
-    console.log(existingCycle);
-    if (existingCycle) {
-      console.log("cycle already exists");
-      return;
-    }
+    // console.log("running");
+    // const existingCycle = await Cycle.find({ user });
+    // console.log(existingCycle);
+    // if (existingCycle) {
+    //   console.log("cycle already exists");
+    //   return;
+    // }
 
     await Cycle.create({ from, to, budget, user });
+    revalidatePath("/");
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function editCycleAction(params: EditCycleParams) {
+  try {
+    connectDB();
+
+    const { cycleId, from, to, budget } = params;
+
+    const cycle = await Cycle.findById(cycleId);
+
+    if (!cycle) throw new Error("Cycle not found");
+
+    cycle.from = from;
+    cycle.to = to;
+    cycle.budget = budget;
+
+    await cycle.save();
+
+    revalidatePath("/");
   } catch (error) {
     console.log(error);
     throw error;

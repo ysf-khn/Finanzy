@@ -6,6 +6,7 @@ import { getUserTransactions } from "@/lib/actions/transaction.action";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
+import DownloadStatement from "@/app/components/DownloadStatement";
 
 export const metadata: Metadata = {
   title: "Finanzy | All Transactions",
@@ -25,20 +26,18 @@ export default async function DemoPage() {
 
   return (
     <section className="w-full ">
-      <div className="flex items-center px-6 justify-between font-bold mb-8 text-xl">
-        <p>All Transactions</p>
+      <div className="md:flex max-sm:mb-4 items-center max-sm:px-2 md:px-6 justify-between font-bold mb-8 text-xl">
+        <p className="max-sm:mb-4">All Transactions</p>
         <div className="flex items-center gap-4">
           <Link href="/add-transaction">
             <Button className="p-6 primary-gradient text-slate-100">
               Add Transaction
             </Button>
           </Link>
-          <Button className="p-6 bg-white text-black border border-green-500">
-            Download Statement
-          </Button>
+          <DownloadStatement transactions={result.transactions} />
         </div>
       </div>
-      <div className="container mx-auto py-10">
+      <div className="md:container mx-auto max-sm:py-4 md:py-10">
         <DataTable columns={columns} data={result.transactions} />
       </div>
     </section>

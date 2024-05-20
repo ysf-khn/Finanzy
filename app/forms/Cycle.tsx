@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { CalendarDays } from "lucide-react";
 // @ts-ignore
@@ -26,8 +26,29 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createCycle, getCurrentCycle } from "@/lib/actions/cycle.action";
+import {
+  createCycle,
+  getCurrentCycle,
+  editCycleAction,
+} from "@/lib/actions/cycle.action";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
+
+function convertISOStringToDesiredFormat(isoString: any) {
+  const date = new Date(isoString);
+  const options = {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    timeZone: "Asia/Kolkata",
+    timeZoneName: "shortOffset",
+  };
+  return date.toLocaleString("en-US", options);
+}
 
 const FormSchema = z.object({
   date: z.object({
@@ -42,13 +63,17 @@ const FormSchema = z.object({
 
 interface props {
   className?: React.HTMLAttributes<HTMLDivElement>;
+  editCycle?: boolean;
+  cycleData?: any;
   mongoUser: string;
 }
 
-export function Cycle({ className, mongoUser }: props) {
+export function Cycle({ className, mongoUser, editCycle, cycleData }: props) {
+  // @ts-ignore
   const [date, setDate] = useState<DateRange | undefined>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  const { toast } = useToast();
 
   // let isoToDate: typeof date;
   // let isoFromDate: typeof date;
@@ -56,27 +81,60 @@ export function Cycle({ className, mongoUser }: props) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      date: {},
-      budget: 0,
+      date: {
+        from: cycleData?.from,
+        to: cycleData?.to,
+      },
+      budget: cycleData?.budget.toString(),
     },
   });
+
+  useEffect(() => {
+    if (cycleData) {
+      // form.setValue("budget", cycleData.budget);
+      // form.setValue("date", { from: cycleData.from, to: cycleData.to });
+    }
+  }, [cycleData, form]);
 
   async function onSubmit(values: z.infer<typeof FormSchema>) {
     console.log(values);
     setIsSubmitting(true);
-    console.log(mongoUser);
 
     try {
-      if (await getCurrentCycle({ userId: JSON.parse(mongoUser) }))
-        return console.log("Cycle already exists");
+      if (editCycle) {
+        if (new Date(values.date.from) < new Date(cycleData.from)) {
+          return toast({
+            title: "Not Allowed",
+            description:
+              "Cannot change the cycle starting date to a previous date!",
+            variant: "destructive",
+          });
+          // return alert("Cannot change the starting date");
+        }
 
-      await createCycle({
-        from: values.date.from,
-        to: values.date.to,
-        budget: values.budget,
-        user: JSON.parse(mongoUser),
-      });
+        await editCycleAction({
+          cycleId: cycleData._id,
+          from: values.date.from,
+          to: values.date.to,
+          budget: values.budget,
+        });
+      } else {
+        const latestCycle = await getCurrentCycle({
+          userId: JSON.parse(mongoUser),
+        });
+        // return console.log("Cycle already exists");
+        if (new Date(latestCycle.to) >= new Date(values.date.from))
+          return console.log(
+            "Enter date that is after the previous cycle end date"
+          );
 
+        await createCycle({
+          from: values.date.from,
+          to: values.date.to,
+          budget: values.budget,
+          user: JSON.parse(mongoUser),
+        });
+      }
       router.push("/");
     } catch (error) {
       console.log(error);
@@ -89,7 +147,10 @@ export function Cycle({ className, mongoUser }: props) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mt-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8 mt-4 max-sm:text-left"
+      >
         <FormField
           control={form.control}
           name="date"
@@ -128,7 +189,10 @@ export function Cycle({ className, mongoUser }: props) {
                       mode="range"
                       defaultMonth={field.value?.from}
                       selected={field.value}
-                      onSelect={field.onChange}
+                      onSelect={(e) => {
+                        field.onChange(e);
+                        console.log(e);
+                      }}
                       numberOfMonths={2}
                     />
                   </PopoverContent>
@@ -157,7 +221,7 @@ export function Cycle({ className, mongoUser }: props) {
           )}
         />
         {/* <SheetClose asChild> */}
-        <Button type="submit">Submit</Button>
+        <Button type="submit">{editCycle ? "Save Changes" : "Submit"}</Button>
         {/* </SheetClose> */}
       </form>
     </Form>

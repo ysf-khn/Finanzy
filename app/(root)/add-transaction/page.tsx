@@ -17,7 +17,7 @@ const Page = async () => {
 
       <Tabs
         defaultValue="income"
-        className="w-1/2 bg-white dark:bg-zinc-900 p-4 rounded-sm shadow-sm mx-auto"
+        className="md:w-1/2 bg-white dark:bg-zinc-900 p-4 rounded-sm shadow-sm mx-auto"
       >
         <TabsList className="w-full">
           <TabsTrigger
