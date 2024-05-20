@@ -14,6 +14,23 @@ export const metadata: Metadata = {
   title: "Finanzy | Personalized Expense Management",
   description:
     "Finanzy helps you personalize your budget, completely your way!",
+  generator: "Next.js",
+  manifest: "/manifest.json",
+  keywords: ["nextjs", "nextjs13", "next13", "pwa", "next-pwa"],
+  // themeColor: [{ media: "(prefers-color-scheme: dark)", color: "#fff" }],
+  authors: [
+    { name: "Mohammad Yusuf Khan" },
+    {
+      name: "Mohammad Yusuf Khan",
+      url: "https://www.linkedin.com/in/moyusufkhan/",
+    },
+  ],
+  viewport:
+    "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover",
+  icons: [
+    { rel: "apple-touch-icon", url: "icons/icon-192x192.png" },
+    { rel: "icon", url: "icons/icon-192x192.png" },
+  ],
 };
 
 export default function RootLayout({
