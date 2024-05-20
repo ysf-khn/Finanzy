@@ -59,7 +59,7 @@ const CycleOverview = ({
 
   return (
     <>
-      <Dialog open={open} onOpenChange={setOpen} asChild>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Current Cycle Expired!</DialogTitle>

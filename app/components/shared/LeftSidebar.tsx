@@ -26,7 +26,6 @@ const LeftSidebar = () => {
               }  flex items-center justify-start gap-3 text-lg p-4 rounded-lg`}
             >
               <Image
-                // className="rounded-full primary-gradient p-2"
                 src={link.iconUrl}
                 alt={link.label}
                 width={20}
