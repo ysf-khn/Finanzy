@@ -48,9 +48,11 @@ const Page = async () => {
       <section className="w-full max-sm:px-2 px-6">
         <div className="md:flex items-center justify-between font-semibold mb-12 text-xl">
           <p className="max-sm:mb-4">It&apos;s {date}</p>
-          <div className="flex gap-4">
+          <div className="sm:flex gap-4">
             <Link href="/add-transaction">
-              <Button className="p-6 primary-gradient">Add Transaction</Button>
+              <Button className="p-6 primary-gradient w-full sm:w-auto mb-2 sm:mb-0">
+                Add Transaction
+              </Button>
             </Link>
 
             <CycleSheet currentCycle={cycle} />

@@ -28,9 +28,9 @@ export default async function DemoPage() {
     <section className="w-full ">
       <div className="md:flex max-sm:mb-4 items-center max-sm:px-2 md:px-6 justify-between font-bold mb-8 text-xl">
         <p className="max-sm:mb-4">All Transactions</p>
-        <div className="flex items-center gap-4">
+        <div className="sm:flex items-center gap-4">
           <Link href="/add-transaction">
-            <Button className="p-6 primary-gradient text-slate-100">
+            <Button className="p-6 primary-gradient text-slate-100 w-full sm:w-auto mb-2 sm:mb-0">
               Add Transaction
             </Button>
           </Link>

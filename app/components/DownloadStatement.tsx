@@ -42,7 +42,7 @@ const DownloadStatement = ({ transactions }: any) => {
 
   return (
     <Button
-      className="p-6 hover:bg-white hover:text-black border border-green-500 bg-black text-white"
+      className="p-6 hover:bg-white hover:text-black border border-green-500 bg-black text-white w-full sm:w-auto"
       onClick={exportPDF}
     >
       Download Statement
