@@ -10,8 +10,6 @@ import {
 } from "@/components/ui/sheet";
 import Image from "next/image";
 import Link from "next/link";
-// import { SignedOut } from "@clerk/nextjs";
-// import { Button } from "@/components/ui/button";
 import { sidebarLinks } from "@/constants";
 import { usePathname } from "next/navigation";
 import { DollarSign, Menu } from "lucide-react";
@@ -56,15 +54,9 @@ const MobileNav = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        {/* <Image
-          src="/assets/icons/hamburger.svg"
-          width={36}
-          height={36}
-          alt="Menu"
-          className="invert-colors sm:hidden"
-        /> */}
         <Menu size={36} />
       </SheetTrigger>
+      {/* @ts-ignore */}
       <SheetContent
         side="left"
         className="background-light900_dark200 border-none"

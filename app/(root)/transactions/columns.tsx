@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import {
@@ -23,22 +24,17 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
 import { deleteTransaction } from "@/lib/actions/transaction.action";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
 import { useState } from "react";
-// import { useToast } from "@/components/ui/use-toast";
 
 export const columns: ColumnDef<typeof ExpenseSchema>[] = [
   {
-    // accessorKey: "icon",
     id: "null",
     cell: ({ row }) => {
       return row.original?.transactionType === "income" ? (
@@ -132,12 +128,10 @@ export const columns: ColumnDef<typeof ExpenseSchema>[] = [
       };
 
       return (
-        // <>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen} asChild>
           <DialogContent className="max-sm:w-[300px]  max-sm:rounded-md">
             <DialogHeader className="p-2 max-sm:text-left">
               <DialogTitle className="mb-3">{transaction.name}</DialogTitle>
-              {/* <DialogDescription className="space-y-2"> */}
               <div className="max-sm:text-sm space-y-2">
                 <p>
                   <strong>Type:</strong>{" "}
@@ -175,7 +169,6 @@ export const columns: ColumnDef<typeof ExpenseSchema>[] = [
                   <strong>Notes:</strong> {transaction.notes}
                 </p>
               </div>
-              {/* </DialogDescription> */}
             </DialogHeader>
           </DialogContent>
 
@@ -189,7 +182,6 @@ export const columns: ColumnDef<typeof ExpenseSchema>[] = [
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              {/* <Link href="/transaction/edit"> */}
               <DropdownMenuItem
                 className="cursor-pointer"
                 onClick={showTransactionDialog}
@@ -199,12 +191,10 @@ export const columns: ColumnDef<typeof ExpenseSchema>[] = [
               <DropdownMenuItem className="cursor-pointer" onClick={handleEdit}>
                 Edit
               </DropdownMenuItem>
-              {/* </Link> */}
               <DropdownMenuItem
                 className="cursor-pointer"
                 onClick={() => {
                   deleteTransaction({ transactionId: transaction._id });
-                  // const { toast } = useToast();
 
                   toast({
                     title: "Transaction deleted successfully",

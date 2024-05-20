@@ -72,7 +72,6 @@ const CycleOverview = ({
       </Dialog>
 
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-        {/* <SheetTrigger>Open</SheetTrigger> */}
         {/* @ts-ignore */}
         <SheetContent>
           <SheetHeader>
@@ -83,8 +82,6 @@ const CycleOverview = ({
           </SheetHeader>
         </SheetContent>
       </Sheet>
-
-      {/* <NewCyclesSheet /> */}
 
       <h2 className="text-xl font-semibold mb-6">
         This Cycle{" "}

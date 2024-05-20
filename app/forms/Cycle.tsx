@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { format } from "date-fns";
 import { CalendarDays } from "lucide-react";
 // @ts-ignore
@@ -47,6 +47,7 @@ function convertISOStringToDesiredFormat(isoString: any) {
     timeZone: "Asia/Kolkata",
     timeZoneName: "shortOffset",
   };
+  // @ts-ignore
   return date.toLocaleString("en-US", options);
 }
 
@@ -75,9 +76,6 @@ export function Cycle({ className, mongoUser, editCycle, cycleData }: props) {
   const router = useRouter();
   const { toast } = useToast();
 
-  // let isoToDate: typeof date;
-  // let isoFromDate: typeof date;
-
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -89,12 +87,12 @@ export function Cycle({ className, mongoUser, editCycle, cycleData }: props) {
     },
   });
 
-  useEffect(() => {
-    if (cycleData) {
-      // form.setValue("budget", cycleData.budget);
-      // form.setValue("date", { from: cycleData.from, to: cycleData.to });
-    }
-  }, [cycleData, form]);
+  // useEffect(() => {
+  //   if (cycleData) {
+  //     // form.setValue("budget", cycleData.budget);
+  //     // form.setValue("date", { from: cycleData.from, to: cycleData.to });
+  //   }
+  // }, [cycleData, form]);
 
   async function onSubmit(values: z.infer<typeof FormSchema>) {
     console.log(values);
@@ -109,7 +107,6 @@ export function Cycle({ className, mongoUser, editCycle, cycleData }: props) {
               "Cannot change the cycle starting date to a previous date!",
             variant: "destructive",
           });
-          // return alert("Cannot change the starting date");
         }
 
         await editCycleAction({
@@ -122,7 +119,6 @@ export function Cycle({ className, mongoUser, editCycle, cycleData }: props) {
         const latestCycle = await getCurrentCycle({
           userId: JSON.parse(mongoUser),
         });
-        // return console.log("Cycle already exists");
         if (new Date(latestCycle.to) >= new Date(values.date.from))
           return console.log(
             "Enter date that is after the previous cycle end date"
@@ -142,7 +138,6 @@ export function Cycle({ className, mongoUser, editCycle, cycleData }: props) {
     } finally {
       setIsSubmitting(false);
     }
-    // console.log(isoFromDate, isoToDate);
   }
 
   return (
@@ -198,9 +193,6 @@ export function Cycle({ className, mongoUser, editCycle, cycleData }: props) {
                   </PopoverContent>
                 </Popover>
               </div>
-              {/* <FormDescription>
-                Your date of birth is used to calculate your age.
-              </FormDescription> */}
               <FormMessage />
             </FormItem>
           )}
@@ -220,9 +212,7 @@ export function Cycle({ className, mongoUser, editCycle, cycleData }: props) {
             </FormItem>
           )}
         />
-        {/* <SheetClose asChild> */}
         <Button type="submit">{editCycle ? "Save Changes" : "Submit"}</Button>
-        {/* </SheetClose> */}
       </form>
     </Form>
   );

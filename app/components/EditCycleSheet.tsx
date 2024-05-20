@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -39,13 +38,11 @@ const EditCycleSheet = ({ cycle, mongoUser }: any) => {
           <SheetTitle>
             {editCycle ? "Edit cycle details" : "Configure current cycle"}
           </SheetTitle>
-          {/* <SheetDescription> */}
           <Cycle
             mongoUser={JSON.stringify(mongoUser)}
             editCycle={editCycle}
             cycleData={cycle}
           />
-          {/* </SheetDescription> */}
         </SheetHeader>
       </SheetContent>
     </Sheet>

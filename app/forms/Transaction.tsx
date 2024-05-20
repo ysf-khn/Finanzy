@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +21,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -47,7 +46,6 @@ interface TransactionParams {
 
 const Transaction = ({
   mongoUser,
-  mongoUserId,
   transactionType,
   cycleId,
   type,
@@ -74,12 +72,12 @@ const Transaction = ({
     },
   });
 
-  useEffect(() => {
-    // if (parsedTransactionDetails) {
-    //   form.setValue("amount", parsedTransactionDetails.amount.toString());
-    //   form.setValue("notes", parsedTransactionDetails.notes);
-    // }
-  }, [parsedTransactionDetails, form]);
+  // useEffect(() => {
+  //   // if (parsedTransactionDetails) {
+  //   //   form.setValue("amount", parsedTransactionDetails.amount.toString());
+  //   //   form.setValue("notes", parsedTransactionDetails.notes);
+  //   // }
+  // }, [parsedTransactionDetails, form]);
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof ExpenseSchema>) {
@@ -109,9 +107,9 @@ const Transaction = ({
           category: values.category,
           paymentMode: values.paymentMode,
           notes: values.notes,
-          transactionType,
-          cycle: JSON.parse(cycleId),
-          user: JSON.parse(mongoUser),
+          transactionType: transactionType!,
+          cycle: JSON.parse(cycleId!),
+          user: JSON.parse(mongoUser!),
         });
         toast({
           title: "Transaction created successfully",

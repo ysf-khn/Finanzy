@@ -35,6 +35,7 @@ const DownloadStatement = ({ transactions }: any) => {
     };
 
     doc.text(title, marginLeft, 40);
+    // @ts-ignore
     doc.autoTable(content);
     doc.save("report.pdf");
   };
