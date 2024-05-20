@@ -20,7 +20,7 @@ const EditCycleSheet = ({ cycle, mongoUser }: any) => {
   }, [cycle]);
 
   return (
-    <Sheet asChild>
+    <Sheet>
       <SheetTrigger
         className={`font-normal text-sm dark:bg-transparent border text-gradient rounded-md px-4 ${
           cycle ? "" : ""
