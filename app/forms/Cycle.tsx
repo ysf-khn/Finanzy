@@ -95,7 +95,7 @@ export function Cycle({ className, mongoUser, editCycle, cycleData }: props) {
   // }, [cycleData, form]);
 
   async function onSubmit(values: z.infer<typeof FormSchema>) {
-    console.log(values);
+    // console.log(values);
     setIsSubmitting(true);
 
     try {
@@ -188,7 +188,7 @@ export function Cycle({ className, mongoUser, editCycle, cycleData }: props) {
                       selected={field.value}
                       onSelect={(e) => {
                         field.onChange(e);
-                        console.log(e);
+                        // console.log(e);
                       }}
                       numberOfMonths={2}
                     />

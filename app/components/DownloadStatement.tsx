@@ -12,7 +12,7 @@ const DownloadStatement = ({ transactions }: any) => {
     const size = "A4"; // Use A1, A2, A3 or A4
     const orientation = "portrait"; // portrait or landscape
 
-    console.log(transactions.length);
+    // console.log(transactions.length);
 
     const marginLeft = 40;
     const doc = new jsPDF(orientation, unit, size);

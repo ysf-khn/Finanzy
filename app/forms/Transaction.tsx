@@ -81,11 +81,11 @@ const Transaction = ({
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof ExpenseSchema>) {
-    console.log("submitting");
+    // console.log("submitting");
     setIsSubmitting(true);
 
-    console.log(values, mongoUser, cycleId);
-    console.log(transactionType);
+    // console.log(values, mongoUser, cycleId);
+    // console.log(transactionType);
 
     try {
       if (type === "edit") {

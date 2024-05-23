@@ -199,7 +199,7 @@ export const columns: ColumnDef<typeof ExpenseSchema>[] = [
                   toast({
                     title: "Transaction deleted successfully",
                   });
-                  console.log(transaction);
+                  // console.log(transaction);
                 }}
               >
                 Delete
