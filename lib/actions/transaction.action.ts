@@ -69,6 +69,8 @@ export async function getUserTransactions(params: GetUserTransactionsParams) {
       // @ts-ignore
       .limit(limit);
 
+    if (!userTransactions) return null;
+
     return { transactions: userTransactions };
   } catch (error) {
     console.log(error);

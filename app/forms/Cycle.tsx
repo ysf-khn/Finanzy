@@ -119,10 +119,12 @@ export function Cycle({ className, mongoUser, editCycle, cycleData }: props) {
         const latestCycle = await getCurrentCycle({
           userId: JSON.parse(mongoUser),
         });
-        if (new Date(latestCycle.to) >= new Date(values.date.from))
-          return console.log(
-            "Enter date that is after the previous cycle end date"
-          );
+        if (latestCycle) {
+          if (new Date(latestCycle.to) >= new Date(values.date.from))
+            return console.log(
+              "Enter a date that is after the previous cycle end date"
+            );
+        }
 
         await createCycle({
           from: values.date.from,

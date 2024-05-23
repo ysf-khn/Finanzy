@@ -60,6 +60,9 @@ export async function getOverallIncome(params: GetUserByIdParams) {
     ];
 
     const results = await Transaction.aggregate(pipeline);
+
+    if (!results) return 0;
+
     const totalIncome = results[0]?.totalIncome || 0;
     return totalIncome;
   } catch (error) {
@@ -91,6 +94,9 @@ export async function getOverallExpenses(params: GetUserByIdParams) {
     ];
 
     const results = await Transaction.aggregate(pipeline);
+
+    if (!results) return 0;
+
     const totalExpenses = results[0]?.totalExpenses || 0;
     return totalExpenses;
   } catch (error) {
@@ -136,6 +142,9 @@ export async function getOverallBalance(params: GetUserByIdParams) {
     ];
 
     const results = await Transaction.aggregate(pipeline);
+
+    if (!results) return 0;
+
     const netIncome = results[0]?.netIncome || 0;
 
     return netIncome;

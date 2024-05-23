@@ -23,9 +23,10 @@ export default async function DemoPage() {
   const mongoUser = await getUserById({ userId });
 
   const result = await getUserTransactions({ userId: mongoUser });
+  console.log(result);
 
   return (
-    <section className="w-full ">
+    <section className="w-full h-screen">
       <div className="md:flex max-sm:mb-4 items-center max-sm:px-2 md:px-6 justify-between font-bold mb-8 text-xl">
         <p className="max-sm:mb-4">All Transactions</p>
         <div className="sm:flex items-center gap-4">
@@ -34,11 +35,15 @@ export default async function DemoPage() {
               Add Transaction
             </Button>
           </Link>
-          <DownloadStatement transactions={result.transactions} />
+          <DownloadStatement transactions={result!.transactions} />
         </div>
       </div>
       <div className="md:container mx-auto max-sm:py-4 md:py-10">
-        <DataTable columns={columns} data={result.transactions} />
+        {result?.transactions.length! > 0 ? (
+          <DataTable columns={columns} data={result!.transactions} />
+        ) : (
+          "No transactions yet!"
+        )}
       </div>
     </section>
   );

@@ -39,9 +39,10 @@ const Page = async () => {
   const totalExpenses = await getOverallExpenses({ userId: mongoUser });
   const totalBalance = await getOverallBalance({ userId: mongoUser });
 
-  const cycle = await getCurrentCycle({ userId: mongoUser });
-  const cycleExpenses = await getCycleTotalExpenses({ cycleId: cycle._id });
-  const cycleBalance = await getRemainingCycleBalance({ cycleId: cycle._id });
+  const cycle = (await getCurrentCycle({ userId: mongoUser })) || null;
+
+  const cycleExpenses = await getCycleTotalExpenses({ cycleId: cycle?._id });
+  const cycleBalance = await getRemainingCycleBalance({ cycleId: cycle?._id });
 
   return (
     <>
@@ -130,8 +131,8 @@ const Page = async () => {
 
           <div className="md:w-1/3">
             <h2 className="text-xl font-semibold mb-6">Recent transactions</h2>
-            {result.transactions.length > 0 ? (
-              result.transactions.map((item: any) => (
+            {result!.transactions.length > 0 ? (
+              result!.transactions.map((item: any) => (
                 <div className="flex items-center justify-between text-lg p-4 border mb-3 rounded-md">
                   <div className="flex gap-2">
                     {item.transactionType === "income" ? (
@@ -145,7 +146,7 @@ const Page = async () => {
                 </div>
               ))
             ) : (
-              <p>Start adding some transactions now!</p>
+              <p>No recent transactions 😐. Go add some!</p>
             )}
           </div>
         </div>

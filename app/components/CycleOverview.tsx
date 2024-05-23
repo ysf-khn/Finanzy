@@ -35,8 +35,11 @@ const CycleOverview = ({
   const [budgetExceeded, setBudgetExceeded] = useState(false);
   const [open, setOpen] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
-
-  const checkCycleExpired = compareCycleDateToCurrentDate(cycle.to);
+  let checkCycleExpired: any;
+  const budget = cycle ? cycle.budget : 0;
+  if (cycle) {
+    checkCycleExpired = compareCycleDateToCurrentDate(cycle.to);
+  }
 
   const handleConfigureNewCycle = () => {
     setOpen(false);
@@ -50,12 +53,12 @@ const CycleOverview = ({
   }, []);
 
   useEffect(() => {
-    if (cycleExpenses > cycle.budget) {
+    if (cycleExpenses > budget) {
       setBudgetExceeded(true);
     } else {
       setBudgetExceeded(false);
     }
-  }, [cycleExpenses, cycle.budget]);
+  }, [cycleExpenses, budget]);
 
   return (
     <>
@@ -86,8 +89,10 @@ const CycleOverview = ({
       <h2 className="text-xl font-semibold mb-6">
         This Cycle{" "}
         <span>
-          ({getCycleFormattedDate(cycle.from)} to{" "}
-          {getCycleFormattedDate(cycle.to)})
+          {cycle
+            ? `(${getCycleFormattedDate(cycle.from)} to
+          ${getCycleFormattedDate(cycle.to)})`
+            : "(Not yet configured)"}
         </span>{" "}
         {budgetExceeded && (
           <span className="text-red-500">(Budget exceeded!)</span>
@@ -101,7 +106,7 @@ const CycleOverview = ({
             <DollarSign size={20} color="blue" />
           </div>
           <p className="text-2xl font-bold">
-            ₹{formatNumberWithCommas(cycle.budget)}
+            ₹{formatNumberWithCommas(budget)}
           </p>
         </div>
 

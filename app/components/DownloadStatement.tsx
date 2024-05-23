@@ -12,6 +12,8 @@ const DownloadStatement = ({ transactions }: any) => {
     const size = "A4"; // Use A1, A2, A3 or A4
     const orientation = "portrait"; // portrait or landscape
 
+    console.log(transactions.length);
+
     const marginLeft = 40;
     const doc = new jsPDF(orientation, unit, size);
 
@@ -42,8 +44,12 @@ const DownloadStatement = ({ transactions }: any) => {
 
   return (
     <Button
-      className="p-6 hover:bg-white hover:text-black border border-green-500 bg-black text-white w-full sm:w-auto"
+      className={`p-6 hover:bg-white hover:text-black border border-green-500 bg-black text-white w-full sm:w-auto ${
+        transactions.length === 0 ? "pointer-events-none opacity-50" : ""
+      }`}
       onClick={exportPDF}
+      aria-disabled={transactions.length === 0}
+      tabIndex={transactions.length === 0 ? -1 : undefined}
     >
       Download Statement
     </Button>

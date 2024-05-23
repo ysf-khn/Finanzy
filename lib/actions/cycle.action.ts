@@ -39,6 +39,9 @@ export async function getCurrentCycle(params: GetCycleParams) {
       .sort({ to: -1 })
       .limit(1);
     console.log("LATEST  CYCLE ", cycle);
+
+    if (!cycle) return null;
+
     return JSON.parse(JSON.stringify(cycle));
   } catch (error) {
     console.log(error);
@@ -57,13 +60,19 @@ export async function getCycleTotalExpenses(params: GetCycleExpensesParams) {
       model: Transaction,
     });
 
-    const expenses = cycle.transactions.filter(
-      (transaction: any) => transaction.transactionType === "expense"
-    );
-    const totalExpense = expenses.reduce(
-      (acc: any, transaction: any) => acc + transaction.amount,
-      0
-    );
+    if (!cycle) return 0;
+
+    const expenses = cycle
+      ? cycle?.transactions.filter(
+          (transaction: any) => transaction.transactionType === "expense"
+        )
+      : 0;
+    const totalExpense = expenses
+      ? expenses.reduce(
+          (acc: any, transaction: any) => acc + transaction.amount,
+          0
+        )
+      : 0;
 
     console.log(totalExpense);
 
@@ -87,15 +96,21 @@ export async function getRemainingCycleBalance(params: any) {
       model: Transaction,
     });
 
-    const expenses = cycle.transactions.filter(
-      (transaction: any) => transaction.transactionType === "expense"
-    );
-    const totalExpense = expenses.reduce(
-      (acc: any, transaction: any) => acc + transaction.amount,
-      0
-    );
+    if (!cycle) return 0;
 
-    const remainingBalance = cycle.budget - totalExpense || 0;
+    const expenses = cycle
+      ? cycle.transactions.filter(
+          (transaction: any) => transaction.transactionType === "expense"
+        )
+      : 0;
+    const totalExpense = expenses
+      ? expenses.reduce(
+          (acc: any, transaction: any) => acc + transaction.amount,
+          0
+        )
+      : 0;
+
+    const remainingBalance = cycle ? cycle.budget - totalExpense : 0;
 
     return remainingBalance;
   } catch (error) {
