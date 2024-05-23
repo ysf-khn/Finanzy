@@ -12,6 +12,7 @@ const Navbar = async () => {
   console.log(userId);
 
   const mongoUser = await User.findOne({ clerkId: userId });
+  console.log("MongoDB ", mongoUser);
 
   return (
     <nav className=" py-6 max-sm:px-6 md:px-12 flex items-center justify-between fixed z-50 shadow-sm w-full bg-white dark:bg-zinc-900">

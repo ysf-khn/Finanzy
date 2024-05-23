@@ -42,11 +42,14 @@ function getOrdinalSuffix(day: number): string {
 }
 
 export function formatNumberWithCommas(number: number): string {
-  // Use toLocaleString for comma separation (adjust options as needed)
-  return number.toLocaleString("en-US", {
-    minimumFractionDigits: 0, // Set to 2 for decimals (adjust as needed)
-    maximumFractionDigits: 0, // Set to 2 for decimals (adjust as needed)
-  });
+  if (number) {
+    return number.toLocaleString("en-US", {
+      minimumFractionDigits: 0, // Set to 2 for decimals (adjust as needed)
+      maximumFractionDigits: 0, // Set to 2 for decimals (adjust as needed)
+    });
+  } else {
+    return "0";
+  }
 }
 
 export function timeAgo(date: Date): string {
