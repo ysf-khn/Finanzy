@@ -17,10 +17,10 @@ export default function Loading() {
         <div className="md:w-2/3">
           <div className="mb-6">
             <h2>This Cycle</h2>
-            <Skeleton className="h-full flex-grow rounded-md" />
+            <Skeleton className="h-[100px] flex-grow rounded-md" />
             <div className="flex gap-4">
-              <Skeleton className="h-full flex-grow rounded-md" />
-              <Skeleton className="h-full flex-grow rounded-md" />
+              <Skeleton className="h-[100px] flex-grow rounded-md" />
+              <Skeleton className="h-[100px] flex-grow rounded-md" />
             </div>
           </div>
 
@@ -82,7 +82,7 @@ export default function Loading() {
             Recent transactions
           </h2>
           {"abcde".split("").map((i) => (
-            <Skeleton key={i} className="w-full h-[30px] rounded-md" />
+            <Skeleton key={i} className="w-full h-[50px] rounded-md mb-4" />
           ))}
         </div>
       </div>
