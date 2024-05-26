@@ -86,7 +86,7 @@ const CycleOverview = ({
         </SheetContent>
       </Sheet>
 
-      <h2 className="text-xl font-semibold mb-6">
+      <h2 className="md:text-xl font-semibold mb-4 md:mb-6">
         This Cycle{" "}
         <span>
           {cycle
@@ -100,18 +100,18 @@ const CycleOverview = ({
       </h2>
 
       <div className="md:flex items-center justify-between gap-6 max-sm:space-y-3">
-        <div className="p-8 flex-1 rounded-md border border-1 ">
+        <div className="p-3 md:p-8 flex-1 rounded-xl md:rounded-md border border-1 ">
           <div className="flex items-center justify-between mb-4">
             <p>Budget</p>
             <DollarSign size={20} color="blue" />
           </div>
-          <p className="text-2xl font-bold">
+          <p className="text-xl md:text-2xl font-bold">
             ₹{formatNumberWithCommas(budget)}
           </p>
         </div>
 
         {/* big screens */}
-        <div className="p-8 flex-1 rounded-md border max-sm:hidden">
+        <div className="p-3 md:p-8 flex-1 rounded-md border max-sm:hidden">
           <div className="flex items-center justify-between mb-4">
             <p>Spent</p>
             <TrendingDown size={20} color="red" />
@@ -120,7 +120,7 @@ const CycleOverview = ({
             ₹{formatNumberWithCommas(cycleExpenses)}
           </p>
         </div>
-        <div className="p-8 flex-1 rounded-md border border-1 max-sm:hidden">
+        <div className="p-3 md:p-8 flex-1 rounded-md border border-1 max-sm:hidden">
           <div className="flex items-center justify-between mb-4">
             <p>Balance</p>
             <PiggyBank size={20} color="green" />
@@ -132,7 +132,7 @@ const CycleOverview = ({
 
         {/* small screens */}
         <div className="max-sm:flex max-sm:gap-4 md:hidden">
-          <div className="p-8 flex-1 rounded-md border ">
+          <div className="p-3 md:p-8 flex-1 rounded-xl md:rounded-md border ">
             <div className="flex items-center justify-between mb-4">
               <p>Spent</p>
               <TrendingDown size={20} color="red" />
@@ -141,7 +141,7 @@ const CycleOverview = ({
               ₹{formatNumberWithCommas(cycleExpenses)}
             </p>
           </div>
-          <div className="p-8 flex-1 rounded-md border border-1 ">
+          <div className="p-3 md:p-8 flex-1 rounded-xl md:rounded-md border border-1 ">
             <div className="flex items-center justify-between mb-4">
               <p>Balance</p>
               <PiggyBank size={20} color="green" />

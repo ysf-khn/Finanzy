@@ -51,7 +51,7 @@ export const columns: ColumnDef<typeof ExpenseSchema>[] = [
       return (
         <div className="">
           <div className="line-clamp-1 mb-1.5">
-            <p className="max-w-[100px]">{row.original.name}</p>
+            <p className="w-[100px] md:max-w-[100px]">{row.original.name}</p>
           </div>
           <p className="text-slate-500">{timeAgo(row.original.createdAt)}</p>
         </div>
@@ -72,7 +72,7 @@ export const columns: ColumnDef<typeof ExpenseSchema>[] = [
       const sign = transactionType === "income" ? "+" : "-";
 
       return (
-        <div className="text-right font-medium">
+        <div className="text-right font-medium max-sm:w-[100px]">
           {sign} {formatted}
         </div>
       );
@@ -197,7 +197,8 @@ export const columns: ColumnDef<typeof ExpenseSchema>[] = [
                   deleteTransaction({ transactionId: transaction._id });
 
                   toast({
-                    title: "Transaction deleted successfully",
+                    title: "Success",
+                    description: "Transaction deleted successfully.",
                   });
                   // console.log(transaction);
                 }}

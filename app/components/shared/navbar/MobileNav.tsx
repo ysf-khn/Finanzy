@@ -8,11 +8,16 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import Image from "next/image";
 import Link from "next/link";
 import { sidebarLinks } from "@/constants";
 import { usePathname } from "next/navigation";
-import { DollarSign, Menu } from "lucide-react";
+import {
+  ArrowLeftRight,
+  Banknote,
+  DollarSign,
+  LayoutDashboard,
+  Menu,
+} from "lucide-react";
 
 const NavContent = () => {
   const pathname = usePathname();
@@ -32,13 +37,19 @@ const NavContent = () => {
                 isActive ? "primary-gradient rounded-lg " : ""
               } flex items-center justify-start gap-4  bg-transparent p-4`}
             >
-              <Image
-                src={item.iconUrl}
-                alt={item.label}
-                width={20}
-                height={20}
-                className={`${isActive ? "" : "invert-colors"}`}
-              />
+              {item.label === "Dashboard" ? (
+                <LayoutDashboard
+                  size={20}
+                  color={isActive ? "white" : "green"}
+                />
+              ) : item.label === "All Transactions" ? (
+                <Banknote size={20} color={isActive ? "white" : "green"} />
+              ) : (
+                <ArrowLeftRight
+                  size={20}
+                  color={isActive ? "white" : "green"}
+                />
+              )}
               <p className={`${isActive ? "base-bold" : "base-medium"}`}>
                 {item.label}
               </p>

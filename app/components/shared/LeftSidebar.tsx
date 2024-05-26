@@ -1,7 +1,8 @@
 "use client";
 
 import { sidebarLinks } from "@/constants";
-import Image from "next/image";
+import { ArrowLeftRight, Banknote, LayoutDashboard } from "lucide-react";
+// import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -25,12 +26,19 @@ const LeftSidebar = () => {
                 isActive ? "primary-gradient font-semibold text-white" : ""
               }  flex items-center justify-start gap-3 text-lg p-4 rounded-lg`}
             >
-              <Image
-                src={link.iconUrl}
-                alt={link.label}
-                width={20}
-                height={20}
-              />
+              {link.label === "Dashboard" ? (
+                <LayoutDashboard
+                  size={20}
+                  color={isActive ? "white" : "green"}
+                />
+              ) : link.label === "All Transactions" ? (
+                <Banknote size={20} color={isActive ? "white" : "green"} />
+              ) : (
+                <ArrowLeftRight
+                  size={20}
+                  color={isActive ? "white" : "green"}
+                />
+              )}
               <p
                 className={`${
                   isActive ? "base-bold" : "base-medium"

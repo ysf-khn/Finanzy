@@ -37,14 +37,16 @@ const Page = async () => {
           <Transaction
             mongoUser={JSON.stringify(mongoUser)}
             transactionType="income"
-            cycleId={JSON.stringify(cycle._id)}
+            // @ts-ignore
+            cycleId={cycle ? JSON.stringify(cycle._id) : null}
           />
         </TabsContent>
         <TabsContent value="expense">
           <Transaction
             mongoUser={JSON.stringify(mongoUser)}
             transactionType="expense"
-            cycleId={JSON.stringify(cycle._id)}
+            // @ts-ignore
+            cycleId={cycle ? JSON.stringify(cycle._id) : null}
           />
         </TabsContent>
       </Tabs>

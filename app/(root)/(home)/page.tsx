@@ -45,6 +45,8 @@ const Page = async () => {
         getCurrentCycle({ userId: mongoUser }),
       ]);
 
+    console.log(totalBalance);
+
     // If cycle exists, run these operations in parallel
     const [cycleExpenses, cycleBalance] = cycle
       ? await Promise.all([
@@ -56,7 +58,7 @@ const Page = async () => {
     return (
       <>
         <section className="w-full max-sm:px-2 px-6">
-          <div className="md:flex items-center justify-between font-semibold mb-12 text-xl">
+          <div className="md:flex items-center justify-between font-semibold max-sm:mb-8 md:mb-12 md:text-xl">
             <p className="max-sm:mb-4">It&apos;s {date}</p>
             <div className="sm:flex gap-4">
               <Link href="/add-transaction">
@@ -73,7 +75,7 @@ const Page = async () => {
             <div className="md:w-2/3">
               <div className="mb-6">
                 <CycleOverview
-                  mongoUser={mongoUser}
+                  mongoUser={JSON.stringify(mongoUser)}
                   cycle={cycle}
                   cycleExpenses={cycleExpenses}
                   cycleBalance={cycleBalance}
@@ -81,14 +83,16 @@ const Page = async () => {
               </div>
 
               <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-6">Overall</h2>
+                <h2 className="md:text-xl font-semibold mb-4 md:mb-6">
+                  Overall
+                </h2>
                 <div className="md:flex items-center justify-between gap-6 max-sm:space-y-3">
-                  <div className="p-8 flex-1 rounded-md border border-1 ">
+                  <div className="p-3 md:p-8 flex-1 rounded-xl md:rounded-md border border-1 ">
                     <div className="flex items-center justify-between mb-4">
                       <p>Income</p>
                       <TrendingUp size={20} color="green" />
                     </div>
-                    <p className=" text-2xl font-bold">
+                    <p className="text-xl md:text-2xl font-bold">
                       ₹ {formatNumberWithCommas(totalIncome)}
                     </p>
                   </div>
@@ -115,7 +119,7 @@ const Page = async () => {
 
                   {/* small screens */}
                   <div className="max-sm:flex max-sm:gap-4 hidden">
-                    <div className="p-8 flex-1 rounded-md border border-1 ">
+                    <div className="p-3 md:p-8 flex-1 rounded-xl md:rounded-md border border-1 ">
                       <div className="flex items-center justify-between mb-4">
                         <p>Expenses</p>
                         <TrendingDown size={20} color="red" />
@@ -124,13 +128,16 @@ const Page = async () => {
                         ₹ {formatNumberWithCommas(totalExpenses)}
                       </p>
                     </div>
-                    <div className="p-8 flex-1 rounded-md border border-1 ">
+                    <div className="p-3 md:p-8 flex-1 rounded-xl md:rounded-md border border-1 ">
                       <div className="flex items-center justify-between mb-4">
                         <p>Balance</p>
                         <PiggyBank size={20} color="blue" />
                       </div>
-                      <p className="max-sm:text-lg text-2xl font-bold">
-                        ₹ {formatNumberWithCommas(totalBalance)}
+                      <p className={`max-sm:text-lg text-2xl font-bold `}>
+                        ₹{" "}
+                        {/* <span className={totalBalance <= 0 ? "text-black" : ""}> */}
+                        {formatNumberWithCommas(totalBalance)}
+                        {/* </span> */}
                       </p>
                     </div>
                   </div>
@@ -139,12 +146,15 @@ const Page = async () => {
             </div>
 
             <div className="md:w-1/3">
-              <h2 className="text-xl font-semibold mb-6">
+              <h2 className="md:text-xl font-semibold mb-4 md:mb-6">
                 Recent transactions
               </h2>
               {result!.transactions.length > 0 ? (
                 result!.transactions.map((item: any) => (
-                  <div className="flex items-center justify-between text-lg p-4 border mb-3 rounded-md">
+                  <div
+                    key={item._id}
+                    className="flex items-center justify-between md:text-lg p-4 border mb-3 rounded-xl md:rounded-md"
+                  >
                     <div className="flex gap-2">
                       {item.transactionType === "income" ? (
                         <TrendingUp />

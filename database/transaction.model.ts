@@ -7,7 +7,7 @@ export interface ITransaction extends Document {
   paymentMode: string;
   notes: string;
   transactionType: string;
-  cycle: Schema.Types.ObjectId;
+  cycle: Schema.Types.ObjectId | null;
   user: Schema.Types.ObjectId;
   createdAt: Date;
 }
@@ -19,7 +19,7 @@ const TransactionSchema = new Schema({
   paymentMode: { type: String },
   notes: { type: String },
   transactionType: { type: String, required: true },
-  cycle: { type: Schema.Types.ObjectId, ref: "Cycle", required: true },
+  cycle: { type: Schema.Types.ObjectId, ref: "Cycle", required: false },
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
   createdAt: { type: Date, default: Date.now },
 });

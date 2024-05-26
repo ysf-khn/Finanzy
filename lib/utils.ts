@@ -54,7 +54,9 @@ export function formatNumberWithCommas(number: number): string {
 
 export function timeAgo(date: Date): string {
   const now = new Date();
-  const diff = now.getTime() - date.getTime();
+  // console.log(date);
+  const inputDate = new Date(date);
+  const diff = now.getTime() - inputDate.getTime();
 
   const seconds = Math.floor(diff / 1000);
   const minutes = Math.floor(seconds / 60);

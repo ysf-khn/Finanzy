@@ -72,13 +72,6 @@ const Transaction = ({
     },
   });
 
-  // useEffect(() => {
-  //   // if (parsedTransactionDetails) {
-  //   //   form.setValue("amount", parsedTransactionDetails.amount.toString());
-  //   //   form.setValue("notes", parsedTransactionDetails.notes);
-  //   // }
-  // }, [parsedTransactionDetails, form]);
-
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof ExpenseSchema>) {
     // console.log("submitting");
@@ -86,6 +79,8 @@ const Transaction = ({
 
     // console.log(values, mongoUser, cycleId);
     // console.log(transactionType);
+
+    console.log(cycleId);
 
     try {
       if (type === "edit") {
@@ -98,7 +93,11 @@ const Transaction = ({
           notes: values.notes,
           transactionType: values.transactionType,
         });
-        toast({ title: "Transaction edited successfully", variant: "default" });
+        toast({
+          title: "Success",
+          description: "Transaction edited successfully.",
+          variant: "default",
+        });
         router.push("/transactions");
       } else {
         await createTransaction({
@@ -108,11 +107,12 @@ const Transaction = ({
           paymentMode: values.paymentMode,
           notes: values.notes,
           transactionType: transactionType!,
-          cycle: JSON.parse(cycleId!),
+          cycle: cycleId ? JSON.parse(cycleId!) : null,
           user: JSON.parse(mongoUser!),
         });
         toast({
-          title: "Transaction created successfully",
+          title: "Success",
+          description: "Transaction created successfully.",
           variant: "default",
         });
       }

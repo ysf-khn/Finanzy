@@ -146,7 +146,7 @@ export function Cycle({ className, mongoUser, editCycle, cycleData }: props) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 mt-4 max-sm:text-left"
+        className="space-y-6 max-sm:text-left"
       >
         <FormField
           control={form.control}

@@ -35,7 +35,7 @@ const EditCycleSheet = ({ cycle, mongoUser }: any) => {
       {/* @ts-ignore */}
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>
+          <SheetTitle className="mb-3">
             {editCycle ? "Edit cycle details" : "Configure current cycle"}
           </SheetTitle>
           <Cycle

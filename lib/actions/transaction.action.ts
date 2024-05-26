@@ -6,6 +6,7 @@ import { connectDB } from "../mongoose";
 import Transaction from "@/database/transaction.model";
 import { revalidatePath } from "next/cache";
 import Cycle from "@/database/cycle.model";
+// import TransactionNoCycle from "@/database/nocycletrx.model";
 
 interface CreateTransactionParams {
   name: string;
@@ -13,10 +14,20 @@ interface CreateTransactionParams {
   category?: string;
   paymentMode?: string;
   notes?: string;
-  cycle: string;
+  cycle?: string;
   transactionType: string;
   user: Schema.Types.ObjectId | IUser;
 }
+
+// interface CreateTransactionNoCycleParams {
+//   name: string;
+//   amount: number;
+//   category?: string;
+//   paymentMode?: string;
+//   notes?: string;
+//   transactionType: string;
+//   user: Schema.Types.ObjectId | IUser;
+// }
 
 interface GetUserTransactionsParams {
   userId: string | null;
@@ -61,8 +72,10 @@ export async function getUserTransactions(params: GetUserTransactionsParams) {
     connectDB();
 
     const { userId, limit } = params;
-
-    const userTransactions = await Transaction.find({ user: userId })
+    console.log(userId);
+    const userTransactions = await Transaction.find({
+      user: userId,
+    })
       .sort({
         createdAt: -1,
       })
@@ -136,7 +149,7 @@ export async function createTransaction(params: CreateTransactionParams) {
       paymentMode: paymentMode ?? "",
       notes: notes ?? "",
       transactionType,
-      cycle,
+      cycle: cycle ?? null,
       user,
     });
 
@@ -144,12 +157,50 @@ export async function createTransaction(params: CreateTransactionParams) {
       $push: { transactions: newTransaction._id },
     });
 
-    revalidatePath("/payments");
+    revalidatePath("/transactions");
   } catch (error) {
     console.log(error);
     throw error;
   }
 }
+
+// export async function createTransactionNoCycle(
+//   params: CreateTransactionNoCycleParams
+// ) {
+//   try {
+//     connectDB();
+
+//     const {
+//       name,
+//       amount,
+//       category,
+//       paymentMode,
+//       notes,
+//       transactionType,
+//       user,
+//     } = params;
+
+//     // const newTransaction =
+//     await TransactionNoCycle.create({
+//       name,
+//       amount,
+//       category: category ?? "",
+//       paymentMode: paymentMode ?? "",
+//       notes: notes ?? "",
+//       transactionType,
+//       user,
+//     });
+
+//     // await Cycle.findByIdAndUpdate(cycle, {
+//     //   $push: { transactions: newTransaction._id },
+//     // });
+
+//     revalidatePath("/payments");
+//   } catch (error) {
+//     console.log(error);
+//     throw error;
+//   }
+// }
 
 export async function deleteTransaction(params: DeleteTransactionParams) {
   try {
