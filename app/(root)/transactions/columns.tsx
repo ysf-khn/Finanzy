@@ -8,9 +8,12 @@ import {
 } from "@/lib/utils";
 import { ExpenseSchema } from "@/lib/validations";
 import { ColumnDef } from "@tanstack/react-table";
-import { TrendingDown, TrendingUp } from "lucide-react";
-import { MoreHorizontal } from "lucide-react";
-
+import {
+  ArrowUpDown,
+  TrendingDown,
+  TrendingUp,
+  MoreHorizontal,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -60,7 +63,19 @@ export const columns: ColumnDef<typeof ExpenseSchema>[] = [
   },
   {
     accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
+    header: ({ column }) => {
+      return (
+        <Button
+          className="text-right"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <span className="">Amount</span>
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    // <div className="text-right">Amount</div>},
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"));
       const formatted = new Intl.NumberFormat("en-US", {

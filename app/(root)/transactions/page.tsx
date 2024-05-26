@@ -24,7 +24,7 @@ export default async function DemoPage() {
   });
 
   return (
-    <section className="w-full h-screen">
+    <section className="w-full">
       <div className="md:flex max-sm:mb-4 items-center max-sm:px-2 md:px-6 justify-between font-bold mb-8 md:text-xl">
         <p className="max-sm:mb-4">All Transactions</p>
         <div className="sm:flex items-center gap-4">
@@ -38,14 +38,14 @@ export default async function DemoPage() {
           />
         </div>
       </div>
-      <div className="md:container mx-auto max-sm:py-4 md:py-10">
+      <div className="md:container mx-auto max-sm:py-4 md:py-10 h-auto">
         {result?.transactions.length! > 0 ? (
           <DataTable
             columns={columns}
             data={JSON.parse(JSON.stringify(result!.transactions))}
           />
         ) : (
-          "No transactions yet!"
+          <p className="">No transactions yet!</p>
         )}
       </div>
     </section>
