@@ -9,21 +9,11 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
 import { Cycle } from "../forms/Cycle";
-import Transaction from "../forms/Transaction";
 
 const EditCycleSheet = ({ cycle, mongoUser }: any) => {
   const [editCycle, setEditCycle] = useState(false);
-  // const [dialogOpen, setDialogOpen] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   useEffect(() => {
     if (cycle) {
@@ -33,7 +23,7 @@ const EditCycleSheet = ({ cycle, mongoUser }: any) => {
 
   return (
     <>
-      <Sheet>
+      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
         <SheetTrigger
           className={`font-normal text-sm dark:bg-transparent border text-gradient rounded-md px-4 py-4 sm:py-0 w-full sm:w-auto ${
             cycle ? "" : ""
@@ -55,6 +45,7 @@ const EditCycleSheet = ({ cycle, mongoUser }: any) => {
               mongoUser={JSON.stringify(mongoUser)}
               editCycle={editCycle}
               cycleData={cycle}
+              setSheetOpen={setSheetOpen}
             />
           </SheetHeader>
         </SheetContent>

@@ -67,9 +67,16 @@ interface props {
   editCycle?: boolean;
   cycleData?: any;
   mongoUser: string;
+  setSheetOpen: any;
 }
 
-export function Cycle({ className, mongoUser, editCycle, cycleData }: props) {
+export function Cycle({
+  className,
+  mongoUser,
+  editCycle,
+  cycleData,
+  setSheetOpen,
+}: props) {
   // @ts-ignore
   const [date, setDate] = useState<DateRange | undefined>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -80,22 +87,14 @@ export function Cycle({ className, mongoUser, editCycle, cycleData }: props) {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       date: {
-        from: cycleData?.from,
-        to: cycleData?.to,
+        from: new Date(cycleData?.from),
+        to: new Date(cycleData?.to),
       },
       budget: cycleData?.budget.toString(),
     },
   });
 
-  // useEffect(() => {
-  //   if (cycleData) {
-  //     // form.setValue("budget", cycleData.budget);
-  //     // form.setValue("date", { from: cycleData.from, to: cycleData.to });
-  //   }
-  // }, [cycleData, form]);
-
   async function onSubmit(values: z.infer<typeof FormSchema>) {
-    // console.log(values);
     setIsSubmitting(true);
 
     try {
@@ -133,6 +132,8 @@ export function Cycle({ className, mongoUser, editCycle, cycleData }: props) {
           user: JSON.parse(mongoUser),
         });
       }
+      setSheetOpen(false);
+
       router.push("/");
     } catch (error) {
       console.log(error);
@@ -188,7 +189,6 @@ export function Cycle({ className, mongoUser, editCycle, cycleData }: props) {
                       selected={field.value}
                       onSelect={(e) => {
                         field.onChange(e);
-                        // console.log(e);
                       }}
                       numberOfMonths={2}
                     />

@@ -125,7 +125,10 @@ const Transaction = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 ">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-5 max-sm:text-left"
+      >
         <FormField
           control={form.control}
           name="name"
