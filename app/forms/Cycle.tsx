@@ -67,7 +67,7 @@ interface props {
   editCycle?: boolean;
   cycleData?: any;
   mongoUser: string;
-  setSheetOpen: any;
+  setSheetOpen?: any;
 }
 
 export function Cycle({
