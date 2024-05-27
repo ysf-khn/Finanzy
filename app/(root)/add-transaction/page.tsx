@@ -16,7 +16,7 @@ const Page = async () => {
       </div>
 
       <Tabs
-        defaultValue="income"
+        defaultValue="expense"
         className="md:w-1/2 bg-white dark:bg-zinc-900 p-4 rounded-sm shadow-sm mx-auto"
       >
         <TabsList className="w-full">
@@ -33,18 +33,19 @@ const Page = async () => {
             Expense
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="income">
-          <Transaction
-            mongoUser={JSON.stringify(mongoUser)}
-            transactionType="income"
-            // @ts-ignore
-            cycleId={cycle ? JSON.stringify(cycle._id) : null}
-          />
-        </TabsContent>
+
         <TabsContent value="expense">
           <Transaction
             mongoUser={JSON.stringify(mongoUser)}
             transactionType="expense"
+            // @ts-ignore
+            cycleId={cycle ? JSON.stringify(cycle._id) : null}
+          />
+        </TabsContent>
+        <TabsContent value="income">
+          <Transaction
+            mongoUser={JSON.stringify(mongoUser)}
+            transactionType="income"
             // @ts-ignore
             cycleId={cycle ? JSON.stringify(cycle._id) : null}
           />

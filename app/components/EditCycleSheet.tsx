@@ -8,10 +8,22 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import { Cycle } from "../forms/Cycle";
+import Transaction from "../forms/Transaction";
 
 const EditCycleSheet = ({ cycle, mongoUser }: any) => {
   const [editCycle, setEditCycle] = useState(false);
+  // const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     if (cycle) {
@@ -20,32 +32,34 @@ const EditCycleSheet = ({ cycle, mongoUser }: any) => {
   }, [cycle]);
 
   return (
-    <Sheet>
-      <SheetTrigger
-        className={`font-normal text-sm dark:bg-transparent border text-gradient rounded-md px-4 py-4 sm:py-0 w-full sm:w-auto ${
-          cycle ? "" : ""
-        }`}
-      >
-        {" "}
-        {/* <Button className="p-6 dark:bg-transparent border text-gradient">
+    <>
+      <Sheet>
+        <SheetTrigger
+          className={`font-normal text-sm dark:bg-transparent border text-gradient rounded-md px-4 py-4 sm:py-0 w-full sm:w-auto ${
+            cycle ? "" : ""
+          }`}
+        >
+          {" "}
+          {/* <Button className="p-6 dark:bg-transparent border text-gradient">
           {currentCycle ? "Edit Current Cycle" : "Set Current Cycle"}
         </Button> */}
-        {editCycle ? "Edit Current Cycle" : "Set Current Cycle"}
-      </SheetTrigger>
-      {/* @ts-ignore */}
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle className="mb-3">
-            {editCycle ? "Edit cycle details" : "Configure current cycle"}
-          </SheetTitle>
-          <Cycle
-            mongoUser={JSON.stringify(mongoUser)}
-            editCycle={editCycle}
-            cycleData={cycle}
-          />
-        </SheetHeader>
-      </SheetContent>
-    </Sheet>
+          {editCycle ? "Edit Current Cycle" : "Set Current Cycle"}
+        </SheetTrigger>
+        {/* @ts-ignore */}
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle className="mb-3">
+              {editCycle ? "Edit cycle details" : "Configure current cycle"}
+            </SheetTitle>
+            <Cycle
+              mongoUser={JSON.stringify(mongoUser)}
+              editCycle={editCycle}
+              cycleData={cycle}
+            />
+          </SheetHeader>
+        </SheetContent>
+      </Sheet>
+    </>
   );
 };
 

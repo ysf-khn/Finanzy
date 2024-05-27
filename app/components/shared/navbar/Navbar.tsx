@@ -3,7 +3,7 @@ import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import React from "react";
 import { DarkModeToggle } from "../../DarkModeToggle";
-import { DollarSign, Wallet } from "lucide-react";
+import { Wallet } from "lucide-react";
 import { auth } from "@clerk/nextjs/server";
 import MobileNav from "./MobileNav";
 
@@ -16,7 +16,7 @@ const Navbar = async () => {
   });
 
   return (
-    <nav className=" py-3 max-sm:px-6 md:px-12 flex items-center justify-between fixed z-50 shadow-sm w-full bg-white dark:bg-zinc-900">
+    <nav className=" py-3 max-sm:px-6 md:px-12 md:py-6 flex items-center justify-between fixed z-50 shadow-sm w-full bg-white dark:bg-zinc-900">
       <Link href="/" className="">
         <h1 className="text-3xl font-bold flex items-center">
           {" "}

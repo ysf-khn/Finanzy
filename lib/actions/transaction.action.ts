@@ -147,7 +147,7 @@ export async function createTransaction(params: CreateTransactionParams) {
       amount,
       category: category ?? "",
       paymentMode: paymentMode ?? "",
-      notes: notes ?? "",
+      notes: notes ?? "Empty",
       transactionType,
       cycle: cycle ?? null,
       user,

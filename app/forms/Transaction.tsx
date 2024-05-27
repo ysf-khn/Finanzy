@@ -63,7 +63,7 @@ const Transaction = ({
     resolver: zodResolver(ExpenseSchema),
     defaultValues: {
       name: parsedTransactionDetails?.name || "",
-      amount: parsedTransactionDetails?.amount.toString() || 0,
+      amount: parsedTransactionDetails?.amount.toString() || "",
       category: parsedTransactionDetails?.category || "",
       paymentMode: parsedTransactionDetails?.paymentMode || "",
       notes: parsedTransactionDetails?.notes,
@@ -74,11 +74,7 @@ const Transaction = ({
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof ExpenseSchema>) {
-    // console.log("submitting");
     setIsSubmitting(true);
-
-    // console.log(values, mongoUser, cycleId);
-    // console.log(transactionType);
 
     console.log(cycleId);
 
@@ -90,6 +86,7 @@ const Transaction = ({
           amount: values.amount,
           category: values.category,
           paymentMode: values.paymentMode,
+          // @ts-ignore
           notes: values.notes,
           transactionType: values.transactionType,
         });
@@ -156,7 +153,8 @@ const Transaction = ({
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Amount <span className="text-gradient">*</span>
+                {/* Amount <span className="text-gradient">*</span> */}
+                Amount
               </FormLabel>
               <FormControl>
                 <Input placeholder="₹" {...field} className="dark:bg-black" />
@@ -271,7 +269,7 @@ const Transaction = ({
                   {...field}
                   onChange={field.onChange}
                   className="dark:bg-black"
-                />
+                ></Textarea>
               </FormControl>
 
               <FormMessage />

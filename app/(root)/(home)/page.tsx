@@ -20,6 +20,8 @@ import {
 import { Metadata } from "next";
 import CycleOverview from "@/app/components/CycleOverview";
 
+import HomeTransactionDialog from "@/app/components/HomeTransactionDialog";
+
 export const metadata: Metadata = {
   title: "Finanzy | Personalized Expense Management",
   description:
@@ -35,7 +37,6 @@ const Page = async () => {
   try {
     const mongoUser = await getUserById({ userId });
 
-    // Run these operations in parallel
     const [result, totalIncome, totalExpenses, totalBalance, cycle] =
       await Promise.all([
         getUserTransactions({ userId: mongoUser, limit: 5 }),
@@ -45,9 +46,6 @@ const Page = async () => {
         getCurrentCycle({ userId: mongoUser }),
       ]);
 
-    console.log(totalBalance);
-
-    // If cycle exists, run these operations in parallel
     const [cycleExpenses, cycleBalance] = cycle
       ? await Promise.all([
           getCycleTotalExpenses({ cycleId: cycle._id }),
@@ -57,6 +55,11 @@ const Page = async () => {
 
     return (
       <>
+        <HomeTransactionDialog
+          mongoUser={JSON.stringify(mongoUser)}
+          cycle={cycle}
+        />
+
         <section className="w-full max-sm:px-2 px-6">
           <div className="md:flex items-center justify-between font-semibold max-sm:mb-8 md:mb-12 md:text-xl">
             <p className="max-sm:mb-4">It&apos;s {date}</p>
