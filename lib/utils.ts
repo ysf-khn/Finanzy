@@ -79,23 +79,11 @@ export function timeAgo(date: Date): string {
 
 export function formatStatementTime(timeString: string): string {
   const date = new Date(timeString);
-  const options = {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-  } as const;
-  const formattedTime = date.toLocaleString("en-US", options);
-  const [date_, time] = formattedTime.split("at ");
-  const [month, day, year] = date_.split(" ");
-  const [hourMinute, amPm] = time.split(" ");
-  const formattedDate = `${day.substring(
-    0,
-    day.length - 1
-  )} ${month} ${year}, ${hourMinute} ${amPm.toLowerCase()}`;
-  return formattedDate;
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const year = String(date.getFullYear()).slice(-2);
+
+  return `${month}/${day}/${year}`;
 }
 
 export function compareCycleDateToCurrentDate(dateString: string): number {

@@ -7,12 +7,25 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const HomeTransactionDialog = ({ mongoUser, cycle }: any) => {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [showFirstTime, setShowFirstTime] = useState(true);
 
+  //show the dialog on the first time app opening
   useEffect(() => {
-    setDialogOpen(true);
+    const handleSessionStorage = () => {
+      const visited = sessionStorage.getItem("hasVisited");
+      if (!visited) {
+        setShowFirstTime(true);
+        setDialogOpen(true);
+        sessionStorage.setItem("hasVisited", "true");
+      }
+    };
+
+    if (typeof window !== "undefined") {
+      handleSessionStorage();
+    }
   }, []);
 
-  return (
+  return showFirstTime ? (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogContent className="max-sm:w-11/12">
         <DialogHeader>
@@ -57,7 +70,7 @@ const HomeTransactionDialog = ({ mongoUser, cycle }: any) => {
         </DialogHeader>
       </DialogContent>
     </Dialog>
-  );
+  ) : null;
 };
 
 export default HomeTransactionDialog;
