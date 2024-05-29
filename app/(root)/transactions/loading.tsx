@@ -15,7 +15,7 @@ const loading = () => {
         </div>
       </div>
       <div className="md:container mx-auto max-sm:py-4 md:py-10 h-auto">
-        <Skeleton className="w-full h-]100px] rounded-md" />
+        <Skeleton className="w-full h-[100px] rounded-md" />
       </div>
     </section>
   );
