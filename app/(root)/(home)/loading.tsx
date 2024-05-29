@@ -16,7 +16,9 @@ export default function Loading() {
       <div className="md:flex gap-6">
         <div className="md:w-2/3">
           <div className="mb-6">
-            <h2>This Cycle</h2>
+            <h2 className="md:text-xl font-semibold mb-4 md:mb-6">
+              This Cycle
+            </h2>
             <Skeleton className="h-[100px] flex-grow rounded-md mb-4" />
             <div className="flex gap-4">
               <Skeleton className="h-[100px] flex-grow rounded-md" />
