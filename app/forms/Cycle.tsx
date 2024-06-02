@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
-import { format } from "date-fns";
+import { format, isValid } from "date-fns";
 import { CalendarDays } from "lucide-react";
 // @ts-ignore
 import { DateRange } from "react-day-picker";
@@ -87,10 +87,10 @@ export function Cycle({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       date: {
-        from: new Date(cycleData?.from),
-        to: new Date(cycleData?.to),
+        from: cycleData ? cycleData.from : "",
+        to: cycleData ? cycleData.to : "",
       },
-      budget: cycleData?.budget.toString(),
+      budget: cycleData?.budget.toString() || "",
     },
   });
 
