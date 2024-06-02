@@ -27,9 +27,9 @@ const HomeTransactionDialog = ({ mongoUser, cycle }: any) => {
 
   return showFirstTime ? (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-      <DialogContent className="max-sm:w-11/12">
-        <DialogHeader>
-          <div className="md:m-4">
+      <DialogContent className="max-sm:w-10/12 rounded-md p-0 dark:bg-zinc-900">
+        <DialogHeader className="">
+          <div className="max-sm:pt-6 md:m-4">
             <Tabs
               defaultValue="expense"
               className=" bg-white dark:bg-zinc-900 p-4 rounded-sm shadow-sm mx-auto"

@@ -66,10 +66,10 @@ const CycleOverview = ({
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Current Cycle Expired!</DialogTitle>
-            <DialogDescription>
+            <div>
               <p className="mb-4 mt-1">Please configure a new budget cycle.</p>
               <Button onClick={handleConfigureNewCycle}>Configure Now</Button>
-            </DialogDescription>
+            </div>
           </DialogHeader>
         </DialogContent>
       </Dialog>
@@ -79,9 +79,9 @@ const CycleOverview = ({
         <SheetContent>
           <SheetHeader>
             <SheetTitle>Configure new cycle</SheetTitle>
-            <SheetDescription>
-              <Cycle mongoUser={JSON.stringify(mongoUser)} />
-            </SheetDescription>
+            <div>
+              <Cycle mongoUser={mongoUser} setSheetOpen={setSheetOpen} />
+            </div>
           </SheetHeader>
         </SheetContent>
       </Sheet>
@@ -93,10 +93,7 @@ const CycleOverview = ({
             ? `(${getCycleFormattedDate(cycle.from)} to
           ${getCycleFormattedDate(cycle.to)})`
             : "(Not yet configured)"}
-        </span>{" "}
-        {budgetExceeded && (
-          <span className="text-red-500">(Budget exceeded!)</span>
-        )}
+        </span>
       </h2>
 
       <div className="md:flex items-center justify-between gap-6 max-sm:space-y-3">
@@ -106,7 +103,7 @@ const CycleOverview = ({
             <DollarSign size={20} color="blue" />
           </div>
           <p className="text-xl md:text-2xl font-bold">
-            ₹{formatNumberWithCommas(budget)}
+            ₹ {formatNumberWithCommas(budget)}
           </p>
         </div>
 
@@ -117,7 +114,7 @@ const CycleOverview = ({
             <TrendingDown size={20} color="red" />
           </div>
           <p className=" text-2xl font-bold">
-            ₹{formatNumberWithCommas(cycleExpenses)}
+            ₹ {formatNumberWithCommas(cycleExpenses)}
           </p>
         </div>
         <div className="p-3 md:p-8 flex-1 rounded-md border border-1 max-sm:hidden">
@@ -125,8 +122,10 @@ const CycleOverview = ({
             <p>Balance</p>
             <PiggyBank size={20} color="green" />
           </div>
-          <p className="text-2xl font-bold">
-            ₹{formatNumberWithCommas(cycleBalance)}
+          <p
+            className={`text-2xl font-bold ${budgetExceeded && "text-red-500"}`}
+          >
+            ₹ {formatNumberWithCommas(cycleBalance)}
           </p>
         </div>
 
@@ -138,7 +137,7 @@ const CycleOverview = ({
               <TrendingDown size={20} color="red" />
             </div>
             <p className=" max-sm:text-lg text-2xl font-bold">
-              ₹{formatNumberWithCommas(cycleExpenses)}
+              ₹ {formatNumberWithCommas(cycleExpenses)}
             </p>
           </div>
           <div className="p-3 md:p-8 flex-1 rounded-xl md:rounded-md border border-1 ">
@@ -146,8 +145,12 @@ const CycleOverview = ({
               <p>Balance</p>
               <PiggyBank size={20} color="green" />
             </div>
-            <p className="max-sm:text-lg text-2xl font-bold">
-              ₹{formatNumberWithCommas(cycleBalance)}
+            <p
+              className={`max-sm:text-lg text-2xl font-bold ${
+                budgetExceeded && "text-red-500"
+              }`}
+            >
+              ₹ {formatNumberWithCommas(cycleBalance)}
             </p>
           </div>
         </div>

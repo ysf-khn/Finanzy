@@ -87,8 +87,8 @@ export function Cycle({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       date: {
-        from: cycleData ? cycleData.from : "",
-        to: cycleData ? cycleData.to : "",
+        from: cycleData ? new Date(cycleData.from) : new Date(),
+        to: cycleData ? new Date(cycleData.to) : new Date(),
       },
       budget: cycleData?.budget.toString() || "",
     },
@@ -115,8 +115,9 @@ export function Cycle({
           budget: values.budget,
         });
       } else {
+        const mongoUserObj = JSON.parse(mongoUser);
         const latestCycle = await getCurrentCycle({
-          userId: JSON.parse(mongoUser),
+          userId: mongoUserObj._id,
         });
         if (latestCycle) {
           if (new Date(latestCycle.to) >= new Date(values.date.from))
@@ -124,6 +125,8 @@ export function Cycle({
               "Enter a date that is after the previous cycle end date"
             );
         }
+
+        console.log(mongoUser);
 
         await createCycle({
           from: values.date.from,
@@ -181,7 +184,10 @@ export function Cycle({
                       )}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
+                  <PopoverContent
+                    className="w-auto p-0 max-sm:mr-3"
+                    align="start"
+                  >
                     <Calendar
                       initialFocus
                       mode="range"
@@ -214,7 +220,9 @@ export function Cycle({
             </FormItem>
           )}
         />
-        <Button type="submit">{editCycle ? "Save Changes" : "Submit"}</Button>
+        <Button type="submit" className="primary-gradient">
+          {editCycle ? "Save Changes" : "Submit"}
+        </Button>
       </form>
     </Form>
   );
