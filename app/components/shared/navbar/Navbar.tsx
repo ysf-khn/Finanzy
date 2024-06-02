@@ -9,7 +9,6 @@ import MobileNav from "./MobileNav";
 
 const Navbar = async () => {
   const { userId } = auth();
-  console.log(userId);
 
   const mongoUser = await User.findOne({
     clerkId: userId,

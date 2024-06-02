@@ -38,7 +38,7 @@ export async function getCurrentCycle(params: GetCycleParams) {
     const cycle = await Cycle.findOne({ user: userId })
       .sort({ to: -1 })
       .limit(1);
-    console.log("LATEST  CYCLE ", cycle);
+    // console.log("LATEST  CYCLE ", cycle);
 
     if (!cycle) return null;
 
@@ -74,7 +74,7 @@ export async function getCycleTotalExpenses(params: GetCycleExpensesParams) {
         )
       : 0;
 
-    console.log(totalExpense);
+    // console.log(totalExpense);
 
     const totalCycleExpense = totalExpense || 0;
 

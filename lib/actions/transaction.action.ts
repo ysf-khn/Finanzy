@@ -72,7 +72,7 @@ export async function getUserTransactions(params: GetUserTransactionsParams) {
     connectDB();
 
     const { userId, limit } = params;
-    console.log(userId);
+    // console.log(userId);
     const userTransactions = await Transaction.find({
       user: userId,
     })

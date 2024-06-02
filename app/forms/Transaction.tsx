@@ -76,8 +76,6 @@ const Transaction = ({
   async function onSubmit(values: z.infer<typeof ExpenseSchema>) {
     setIsSubmitting(true);
 
-    console.log(cycleId);
-
     try {
       if (type === "edit") {
         await editTransaction({

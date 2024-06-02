@@ -126,8 +126,6 @@ export function Cycle({
             );
         }
 
-        console.log(mongoUser);
-
         await createCycle({
           from: values.date.from,
           to: values.date.to,

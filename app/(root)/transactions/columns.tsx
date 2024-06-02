@@ -215,7 +215,6 @@ export const columns: ColumnDef<typeof ExpenseSchema>[] = [
                     title: "Success",
                     description: "Transaction deleted successfully.",
                   });
-                  // console.log(transaction);
                 }}
               >
                 Delete

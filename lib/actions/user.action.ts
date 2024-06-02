@@ -25,7 +25,7 @@ export async function getUserById(params: GetUserByIdParams) {
     connectDB();
 
     const { userId } = params;
-    console.log("Thisis user id: " + userId);
+    // console.log("Thisis user id: " + userId);
     const user = await User.findOne({ clerkId: userId });
 
     if (!user) return console.log("User not found");
@@ -160,7 +160,7 @@ export async function createUser(userData: UserDataParams) {
 
     const newUser = await User.create(userData);
 
-    console.log("User created");
+    // console.log("User created");
     return newUser;
   } catch (error) {
     console.log(error);

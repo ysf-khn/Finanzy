@@ -32,8 +32,6 @@ const Page = async () => {
   const date = getFormattedDate();
   const { userId } = auth();
 
-  console.log(userId);
-
   try {
     const mongoUser = await getUserById({ userId });
 
