@@ -21,7 +21,7 @@
   "lang": "en-US",
   "name": "Finanzy",
   "short_name": "Finanzy",
-  "start_url": "https://finanzyapp.com/",
+  "start_url": "/",
   "scope": "https://finanzyapp.com/",
   "description": "Personalized Finance Management",
   "id": "https://finanzyapp.com/"
