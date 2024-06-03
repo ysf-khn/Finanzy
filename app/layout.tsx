@@ -25,11 +25,11 @@ export const metadata: Metadata = {
       url: "https://www.linkedin.com/in/moyusufkhan/",
     },
   ],
-  viewport:
-    "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover",
+  // viewport:
+  //   "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover",
   icons: [
-    { rel: "apple-touch-icon", url: "icons/icon-192x192.png" },
-    { rel: "icon", url: "icons/icon-192x192.png" },
+    { rel: "apple-touch-icon", url: "icon512_rounded.png.png" },
+    { rel: "icon", url: "icon512_rounded.png" },
   ],
 };
 
