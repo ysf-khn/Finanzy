@@ -157,7 +157,7 @@ export async function createTransaction(params: CreateTransactionParams) {
       $push: { transactions: newTransaction._id },
     });
 
-    revalidatePath("/transactions");
+    revalidatePath("/");
   } catch (error) {
     console.log(error);
     throw error;
@@ -221,7 +221,7 @@ export async function deleteTransaction(params: DeleteTransactionParams) {
       { $pull: { transactions: transactionId } }
     );
 
-    revalidatePath("/payments");
+    revalidatePath("/transactions");
   } catch (error) {
     console.log(error);
     throw error;

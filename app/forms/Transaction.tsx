@@ -110,9 +110,8 @@ const Transaction = ({
           description: "Transaction created successfully.",
           variant: "default",
         });
+        router.push("/");
       }
-
-      router.push("/transactions");
     } catch (error) {
       console.log(error);
       throw error;
